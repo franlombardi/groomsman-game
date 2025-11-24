@@ -2,27 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Groomsman Trials</title>
-  <!-- Make it work nicely on phones -->
+  <title>Best Man Qualification Test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
     :root {
-      --bg-color: #050816;
-      --bg-gradient-top: #050816;
-      --bg-gradient-bottom: #151b3b;
-      --accent: #ffb347;      /* gold-ish accent */
-      --accent-soft: #ffcf7f;
-      --text-main: #f5f5f5;
-      --text-muted: #b0b3c3;
-      --danger: #ff5f5f;
-      --good: #4cd964;
-      --card-bg: rgba(10, 15, 35, 0.95);
-      --card-border: rgba(255, 255, 255, 0.1);
-      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.6);
+      --bg-top: #050816;
+      --bg-bottom: #141b3b;
+      --card-bg: #0b1022;
+      --card-border: rgba(148, 163, 184, 0.4);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --accent: #fbbf24;
+      --accent-soft: #fde68a;
+      --danger: #f97373;
+      --good: #4ade80;
       --radius-xl: 24px;
-      --radius-lg: 18px;
-      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.7);
     }
 
     * {
@@ -33,28 +30,25 @@
     }
 
     body {
+      min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #111827 0, #020617 50%);
+      background: radial-gradient(circle at top, #111827 0, #020617 55%);
       color: var(--text-main);
-      min-height: 100vh;
       display: flex;
+      align-items: center;
       justify-content: center;
-      align-items: stretch;
-      padding: 12px;
+      padding: 16px;
     }
 
     .app {
       width: 100%;
-      max-width: 420px;
-      background: linear-gradient(145deg, var(--bg-gradient-top), var(--bg-gradient-bottom));
+      max-width: 430px;
+      background: linear-gradient(145deg, var(--bg-top), var(--bg-bottom));
       border-radius: 32px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(15, 23, 42, 0.9);
       box-shadow: var(--shadow-soft);
-      padding: 14px 14px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      padding: 16px 16px 18px;
       position: relative;
       overflow: hidden;
     }
@@ -63,35 +57,35 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), transparent 60%),
-                  radial-gradient(circle at bottom right, rgba(0, 0, 0, 0.6), transparent 50%);
+      background:
+        radial-gradient(circle at top left, rgba(248, 250, 252, 0.07), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.9), transparent 50%);
       pointer-events: none;
       z-index: -1;
     }
 
     header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
     }
 
     .title-block {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
     }
 
     .subtitle {
       font-size: 0.7rem;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--accent-soft);
     }
 
     h1 {
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: 1.35rem;
       letter-spacing: 0.04em;
     }
 
@@ -99,37 +93,31 @@
       padding: 4px 10px;
       border-radius: 999px;
       background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      display: flex;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 0.7rem;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.68rem;
       color: var(--text-muted);
     }
 
     .badge span.icon {
-      font-size: 0.9rem;
+      font-size: 1rem;
     }
 
     .hud {
-      margin-top: 4px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.72rem;
+      margin-bottom: 10px;
+      font-size: 0.7rem;
       color: var(--text-muted);
     }
 
-    .hud-group {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
     .hud-pill {
-      padding: 3px 9px;
+      padding: 3px 10px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(15, 23, 42, 0.95);
       border: 1px solid rgba(148, 163, 184, 0.5);
       display: inline-flex;
       align-items: center;
@@ -141,254 +129,200 @@
       color: var(--accent-soft);
     }
 
-    .hud-pill.positive span.value {
+    .hud-pill.good span.value {
       color: var(--good);
     }
 
-    .hud-pill.negative span.value {
+    .hud-pill.bad span.value {
       color: var(--danger);
     }
 
-    .hint-text {
-      font-size: 0.66rem;
+    .hint {
+      font-size: 0.68rem;
       color: var(--text-muted);
-      opacity: 0.9;
+      margin-bottom: 10px;
     }
 
-    .main {
-      flex: 1;
-      margin-top: 6px;
-      border-radius: 24px;
-      background: radial-gradient(circle at top, #111827 0, #020617 55%);
-      border: 1px solid rgba(51, 65, 85, 0.8);
-      padding: 10px 10px 12px;
+    .card {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top, #020617 0, #020617 100%);
+      border: 1px solid var(--card-border);
+      padding: 16px 16px 14px;
+      min-height: 280px;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card.active {
+      display: flex;
+    }
+
+    .card-header-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .card-body {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .card-body strong {
+      color: var(--accent-soft);
+      font-weight: 600;
+    }
+
+    .options {
+      margin-top: 14px;
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
 
-    .lane-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      padding: 0 2px;
-    }
-
-    .canvas-wrapper {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: radial-gradient(circle at top, #020617, #020617 60%, #020617);
-      flex: 1;
-      min-height: 260px;
-    }
-
-    canvas {
+    .option-btn {
       width: 100%;
-      height: 100%;
-      display: block;
-      background: transparent;
+      padding: 10px 10px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: linear-gradient(135deg, #020617, #111827);
+      color: var(--text-main);
+      font-size: 0.8rem;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.7);
+      transition:
+        transform 0.08s ease,
+        box-shadow 0.08s ease,
+        border-color 0.08s ease,
+        background 0.08s ease;
     }
 
-    .lane-overlay {
-      position: absolute;
-      inset: 0;
+    .option-btn span.label {
+      flex: 1;
+    }
+
+    .option-btn span.key {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .option-btn:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.9);
+      border-color: var(--accent-soft);
+    }
+
+    .btn-row {
+      margin-top: 16px;
       display: flex;
       flex-direction: column;
-      pointer-events: none;
-    }
-
-    .lane {
-      flex: 1;
-      border-top: 1px dashed rgba(31, 41, 55, 0.9);
-      border-bottom: 1px dashed rgba(31, 41, 55, 0.9);
-    }
-
-    .lane:first-child {
-      border-top: none;
-    }
-
-    .lane:last-child {
-      border-bottom: none;
-    }
-
-    .controls {
-      margin-top: 6px;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
     }
 
     .btn {
-      position: relative;
-      padding: 10px 4px;
-      border-radius: var(--radius-lg);
       border: none;
-      background: linear-gradient(145deg, #1f2937, #111827);
-      color: var(--text-main);
+      border-radius: var(--radius-lg);
+      padding: 11px 10px;
       font-size: 0.8rem;
       font-weight: 600;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.8);
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      gap: 8px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.8);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+      color: #111827;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 7px 18px rgba(250, 204, 21, 0.5);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #020617, #111827);
+      color: var(--text-main);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 7px 18px rgba(15, 23, 42, 0.9);
     }
 
     .btn span.icon {
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
 
-    .btn.primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-      color: #111827;
-      box-shadow: 0 15px 40px rgba(250, 204, 21, 0.5);
-    }
-
-    .btn.primary:active {
-      transform: translateY(1px) scale(0.99);
-      box-shadow: 0 6px 18px rgba(250, 204, 21, 0.45);
-    }
-
-    .btn.secondary {
-      background: linear-gradient(145deg, #111827, #020617);
-      border: 1px solid rgba(148, 163, 184, 0.6);
-    }
-
-    .btn.secondary:active {
-      transform: translateY(1px) scale(0.99);
-      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.9);
-    }
-
-    .btn:focus-visible {
-      outline: 2px solid var(--accent-soft);
-      outline-offset: 2px;
-    }
-
-    .footer-text {
-      margin-top: 4px;
-      font-size: 0.62rem;
-      color: var(--text-muted);
-      text-align: center;
-      opacity: 0.9;
-    }
-
-    .footer-text strong {
-      color: var(--accent-soft);
-      font-weight: 600;
-    }
-
-    /* Overlay cards for intro, level complete, final question, answer */
-
-    .overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      pointer-events: none;
-    }
-
-    .overlay-card {
-      width: 100%;
-      max-width: 330px;
-      background: var(--card-bg);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--card-border);
-      box-shadow: var(--shadow-soft);
-      padding: 16px 18px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transform: translateY(8px);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.16s ease, transform 0.16s ease;
-    }
-
-    .overlay-card.visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .overlay-tag {
-      font-size: 0.64rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent-soft);
-    }
-
-    .overlay-title {
-      font-size: 1.02rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-    }
-
-    .overlay-body {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      line-height: 1.35;
-    }
-
-    .overlay-body strong {
-      color: var(--accent-soft);
-      font-weight: 600;
-    }
-
-    .overlay-actions {
-      margin-top: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .overlay-inline {
-      margin-top: 4px;
+    .small-text {
+      margin-top: 6px;
       font-size: 0.68rem;
       color: var(--text-muted);
     }
 
-    .overlay-inline strong {
-      color: var(--good);
+    .small-text strong {
+      color: var(--accent-soft);
     }
 
-    .small-pill {
+    .score-pill {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       padding: 3px 8px;
       border-radius: 999px;
       background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      font-size: 0.62rem;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.68rem;
       color: var(--text-muted);
     }
 
-    .small-pill span.value {
+    .score-pill span.value {
+      color: var(--good);
       font-weight: 600;
+    }
+
+    footer {
+      margin-top: 8px;
+      text-align: center;
+      font-size: 0.64rem;
+      color: var(--text-muted);
+    }
+
+    footer strong {
       color: var(--accent-soft);
     }
 
     @media (max-width: 380px) {
       .app {
-        border-radius: 20px;
-        padding: 10px;
+        border-radius: 24px;
+        padding: 12px;
       }
 
-      .main {
+      .card {
         border-radius: 18px;
-      }
-
-      .overlay-card {
-        border-radius: 18px;
+        padding: 14px;
       }
     }
   </style>
@@ -397,147 +331,129 @@
   <div class="app">
     <header>
       <div class="title-block">
-        <span class="subtitle">Mini Game Invite</span>
-        <h1>Groomsman Trials</h1>
+        <span class="subtitle">Mini mission</span>
+        <h1>Best Man Qualification Test</h1>
       </div>
       <div class="badge">
         <span class="icon">🤵‍♂️</span>
-        <span id="hudRoleLabel">Wedding Squad</span>
+        <span id="roleLabel">Wedding Squad</span>
       </div>
     </header>
 
     <div class="hud">
-      <div class="hud-group">
-        <div class="hud-pill">
-          <span>Mission</span>
-          <span class="value" id="hudMission">Intro</span>
-        </div>
-        <div class="hud-pill positive">
-          <span>Good Catches</span>
-          <span class="value" id="hudScore">0</span>
-        </div>
+      <div class="hud-pill">
+        <span>Question</span>
+        <span class="value" id="hudQuestion">0 / 0</span>
       </div>
-      <div class="hud-pill negative">
-        <span>Chaos Hit</span>
-        <span class="value" id="hudBad">0</span>
+      <div class="hud-pill good">
+        <span>Score</span>
+        <span class="value" id="hudScore">0</span>
       </div>
     </div>
 
-    <div class="hint-text">
-      Tip: tap <strong>Top lane</strong> or <strong>Bottom lane</strong> to dodge chaos and collect the good stuff.
+    <div class="hint">
+      All you have to do is tap the option that feels most correct. No lifelines, only instinct.
     </div>
 
-    <main class="main">
-      <div class="lane-labels">
-        <span>Top lane</span>
-        <span>Bottom lane</span>
-      </div>
-
-      <div class="canvas-wrapper">
-        <canvas id="gameCanvas" width="360" height="420"></canvas>
-        <div class="lane-overlay">
-          <div class="lane"></div>
-          <div class="lane"></div>
-        </div>
-
-        <!-- Overlays -->
-        <div class="overlay">
-          <div id="introCard" class="overlay-card">
-            <span class="overlay-tag">Briefing</span>
-            <div class="overlay-title" id="introTitle">Welcome, future Groomsman</div>
-            <div class="overlay-body" id="introBody">
-              Clear a couple of quick missions to prove you can handle wedding squad duties.<br /><br />
-              Survive the <strong>Bachelor chaos</strong>, keep the <strong>wedding day</strong> under control, then unlock the real question.
-            </div>
-            <div class="overlay-actions">
-              <button class="btn primary" id="btnStart">
-                <span class="icon">▶️</span>
-                <span>Start Trials</span>
-              </button>
-              <div class="overlay-inline">
-                Move between lanes, collect <strong>good icons</strong> like 🥃 and 🎉, and avoid chaos like 😵 and 💸.
-              </div>
-            </div>
-          </div>
-
-          <div id="levelCard" class="overlay-card">
-            <span class="overlay-tag">Mission Clear</span>
-            <div class="overlay-title" id="levelTitle">Mission 1 complete</div>
-            <div class="overlay-body" id="levelBody">
-              Nice work. You survived the first test.<br />
-              Get ready for the next round.
-            </div>
-            <div class="overlay-actions">
-              <button class="btn primary" id="btnNextMission">
-                <span class="icon">🎮</span>
-                <span>Next Mission</span>
-              </button>
-              <div class="overlay-inline">
-                <span class="small-pill">
-                  <span>Good Catches</span>
-                  <span class="value" id="levelGoodCount">0</span>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div id="finalQuestionCard" class="overlay-card">
-            <span class="overlay-tag">Final Trial</span>
-            <div class="overlay-title" id="finalTitle">You passed all the trials</div>
-            <div class="overlay-body" id="finalBody">
-              You handled the bachelor chaos, kept the wedding day steady, and proved you have the right energy.<br /><br />
-              So here is the real question:
-            </div>
-            <div class="overlay-actions">
-              <button class="btn primary" id="btnYesPrimary">
-                <span class="icon">✅</span>
-                <span id="btnYesPrimaryText">Yes, I am in</span>
-              </button>
-              <button class="btn secondary" id="btnYesSecondary">
-                <span class="icon">🔥</span>
-                <span id="btnYesSecondaryText">Obviously yes</span>
-              </button>
-            </div>
-          </div>
-
-          <div id="finalAnswerCard" class="overlay-card">
-            <span class="overlay-tag">Squad Locked</span>
-            <div class="overlay-title" id="finalAnswerTitle">Let us do this</div>
-            <div class="overlay-body" id="finalAnswerBody">
-              Screenshot this if you want, then send me a message so we can plan the chaos properly.
-            </div>
-            <div class="overlay-actions">
-              <button class="btn primary" id="btnDone">
-                <span class="icon">📲</span>
-                <span>Got it</span>
-              </button>
-              <div class="overlay-inline">
-                You can close this tab and text me whenever you are ready.
-              </div>
-            </div>
-          </div>
+    <!-- Intro card -->
+    <div id="cardIntro" class="card active">
+      <div>
+        <div class="card-header-tag">Briefing</div>
+        <div class="card-title" id="introTitle">Welcome, my friend</div>
+        <div class="card-body" id="introBody">
+          This is your <strong>Best Man Qualification Test</strong>, also known as the Worst Man stress test.<br /><br />
+          You will get a few quick questions about our chaos and my life choices. There is no official pass mark,
+          but I will absolutely judge you silently.
         </div>
       </div>
-
-      <div class="controls">
-        <button class="btn secondary" id="laneTopBtn">
-          <span class="icon">⬆️</span>
-          <span>Top lane</span>
-        </button>
-        <button class="btn secondary" id="laneBottomBtn">
-          <span class="icon">⬇️</span>
-          <span>Bottom lane</span>
-        </button>
+      <div>
+        <div class="btn-row">
+          <button id="btnStart" class="btn btn-primary">
+            <span class="icon">▶️</span>
+            <span>Start the test</span>
+          </button>
+        </div>
+        <div class="small-text">
+          Warning: failing this quiz will not remove you from the invite list, but it might affect the amount of teasing you get.
+        </div>
       </div>
+    </div>
 
-      <div class="footer-text">
-        Designed as a one time invite for the <strong>wedding squad</strong>.
+    <!-- Question card -->
+    <div id="cardQuestion" class="card">
+      <div>
+        <div class="card-header-tag" id="questionTag">Question</div>
+        <div class="card-title" id="questionTitle">Question goes here</div>
+        <div class="card-body" id="questionBody">
+          Pick the one that feels most correct. There is only one official answer, but vibes matter.
+        </div>
+        <div class="options" id="optionsContainer">
+          <!-- buttons inserted here by JS -->
+        </div>
       </div>
-    </main>
+      <div class="small-text" id="questionHint">
+        Tip: answer based on what you know about me, not what you think is the polite answer.
+      </div>
+    </div>
+
+    <!-- Result card -->
+    <div id="cardResult" class="card">
+      <div>
+        <div class="card-header-tag">Debrief</div>
+        <div class="card-title" id="resultTitle">You survived the test</div>
+        <div class="card-body" id="resultBody">
+          Placeholder text for result body.
+        </div>
+      </div>
+      <div>
+        <div class="btn-row">
+          <button id="btnYes1" class="btn btn-primary">
+            <span class="icon">✅</span>
+            <span id="btnYes1Text">Yes, obviously</span>
+          </button>
+          <button id="btnYes2" class="btn btn-secondary">
+            <span class="icon">🔥</span>
+            <span id="btnYes2Text">I was born for this</span>
+          </button>
+        </div>
+        <div class="small-text">
+          <span class="score-pill">
+            <span>Test score</span>
+            <span class="value" id="resultScoreText">0 / 0</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final answer card -->
+    <div id="cardFinal" class="card">
+      <div>
+        <div class="card-header-tag">Squad locked</div>
+        <div class="card-title" id="finalTitle">You are in</div>
+        <div class="card-body" id="finalBody">
+          Screenshot this if you want proof, then text me so we can plan the chaos properly.
+        </div>
+      </div>
+      <div>
+        <div class="btn-row">
+          <button id="btnDone" class="btn btn-primary">
+            <span class="icon">📲</span>
+            <span>Got it</span>
+          </button>
+        </div>
+        <div class="small-text">
+          You can close this tab, but the responsibility is now permanent.
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Designed as a one time invite for the <strong>wedding squad</strong>.
+    </footer>
   </div>
 
   <script>
-    // Utility: get query parameter
+    // Utility, read URL query parameter with a default
     function getQueryParam(key, defaultValue) {
       const params = new URLSearchParams(window.location.search);
       const value = params.get(key);
@@ -545,334 +461,270 @@
       return decodeURIComponent(value);
     }
 
-    // Personalization
+    // Personalization based on name and role
     const guestName = getQueryParam("name", "my friend");
     const guestRoleRaw = getQueryParam("role", "Groomsman");
-    const guestRole = guestRoleRaw.toLowerCase();
+    const guestRoleLower = guestRoleRaw.toLowerCase();
+    const isBestMan = guestRoleLower.includes("best");
 
-    const hudRoleLabel = document.getElementById("hudRoleLabel");
+    const displayRole = isBestMan ? "Best Man" : "Groomsman";
+
+    // Elements
+    const roleLabel = document.getElementById("roleLabel");
     const introTitle = document.getElementById("introTitle");
+    const introBody = document.getElementById("introBody");
+    const hudQuestion = document.getElementById("hudQuestion");
+    const hudScore = document.getElementById("hudScore");
+    const questionTag = document.getElementById("questionTag");
+    const questionTitle = document.getElementById("questionTitle");
+    const questionBody = document.getElementById("questionBody");
+    const optionsContainer = document.getElementById("optionsContainer");
+    const questionHint = document.getElementById("questionHint");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultBody = document.getElementById("resultBody");
+    const resultScoreText = document.getElementById("resultScoreText");
+    const btnYes1Text = document.getElementById("btnYes1Text");
+    const btnYes2Text = document.getElementById("btnYes2Text");
     const finalTitle = document.getElementById("finalTitle");
     const finalBody = document.getElementById("finalBody");
-    const btnYesPrimaryText = document.getElementById("btnYesPrimaryText");
-    const btnYesSecondaryText = document.getElementById("btnYesSecondaryText");
-    const finalAnswerTitle = document.getElementById("finalAnswerTitle");
-    const finalAnswerBody = document.getElementById("finalAnswerBody");
 
-    function setupPersonalization() {
-      let displayRole;
-      let askLine;
-      let primaryText;
-      let secondaryText;
-      let finalLine;
-
-      if (guestRole.includes("best")) {
-        displayRole = "Best Man Invite";
-        askLine = `Will you be one of my Best Men, ${guestName}?`;
-        primaryText = "Yes, I will be your Best Man";
-        secondaryText = "Obviously yes";
-        finalLine = `${guestName}, you are locked in as Best Man. Thank you for being in this with me.`;
-      } else {
-        displayRole = "Groomsman Invite";
-        askLine = `Will you be my Groomsman, ${guestName}?`;
-        primaryText = "Yes, I will be your Groomsman";
-        secondaryText = "Hell yes, I am in";
-        finalLine = `${guestName}, you are officially part of the groomsman squad. Let us make it legendary.`;
-      }
-
-      hudRoleLabel.textContent = displayRole;
-      introTitle.textContent = `Welcome, ${guestName}`;
-      finalTitle.textContent = `You passed all the trials, ${guestName}`;
-      finalBody.innerHTML =
-        "You handled the bachelor chaos, kept the wedding day steady, and proved you have the right energy.<br /><br />" +
-        `<strong>${askLine}</strong>`;
-      btnYesPrimaryText.textContent = primaryText;
-      btnYesSecondaryText.textContent = secondaryText;
-      finalAnswerTitle.textContent = "Squad locked in";
-      finalAnswerBody.textContent =
-        finalLine +
-        " Screenshot this if you want, then send me a message so we can plan the chaos properly.";
-    }
-
-    // Game logic
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-
-    const hudMission = document.getElementById("hudMission");
-    const hudScore = document.getElementById("hudScore");
-    const hudBad = document.getElementById("hudBad");
-    const levelTitle = document.getElementById("levelTitle");
-    const levelBody = document.getElementById("levelBody");
-    const levelGoodCount = document.getElementById("levelGoodCount");
-
-    const introCard = document.getElementById("introCard");
-    const levelCard = document.getElementById("levelCard");
-    const finalQuestionCard = document.getElementById("finalQuestionCard");
-    const finalAnswerCard = document.getElementById("finalAnswerCard");
+    const cardIntro = document.getElementById("cardIntro");
+    const cardQuestion = document.getElementById("cardQuestion");
+    const cardResult = document.getElementById("cardResult");
+    const cardFinal = document.getElementById("cardFinal");
 
     const btnStart = document.getElementById("btnStart");
-    const btnNextMission = document.getElementById("btnNextMission");
-    const btnYesPrimary = document.getElementById("btnYesPrimary");
-    const btnYesSecondary = document.getElementById("btnYesSecondary");
+    const btnYes1 = document.getElementById("btnYes1");
+    const btnYes2 = document.getElementById("btnYes2");
     const btnDone = document.getElementById("btnDone");
-    const laneTopBtn = document.getElementById("laneTopBtn");
-    const laneBottomBtn = document.getElementById("laneBottomBtn");
 
-    const missions = [
+    // Quiz content
+    // You can customize these per friend if you want
+    const questions = [
       {
-        name: "Bachelor Mission",
-        description: "Collect 5 good icons and keep the chaos under control.",
-        targetGood: 5
+        title: "How did we actually meet",
+        body:
+          "There is the official story, and then there is what really happened. Go with what feels true.",
+        options: [
+          "Through some normal, responsible adult situation",
+          "Through a dumb plan that somehow worked",
+          "Through a dumb plan that absolutely did not work"
+        ],
+        correctIndex: 1
       },
       {
-        name: "Wedding Day Mission",
-        description: "Collect 8 good icons while dodging hangovers and drama.",
-        targetGood: 8
+        title: "First drink I am probably ordering at the bar",
+        body:
+          "You have seen this play out enough times to know the answer.",
+        options: [
+          "Something basic, like beer",
+          "Something that looks classy but still hits, like an old fashioned",
+          "Whatever the strongest shot is, immediately"
+        ],
+        correctIndex: 1
+      },
+      {
+        title: "Who panics more when things go wrong",
+        body:
+          "Wedding day, something breaks, who is more likely to panic first.",
+        options: [
+          "Me",
+          "You",
+          "Both, but at least we look calm in photos"
+        ],
+        correctIndex: 2
+      },
+      {
+        title: "Our default plan when we have no plan",
+        body:
+          "It is a big life decision. What do we usually end up doing.",
+        options: [
+          "One drink and a responsible early night",
+          "Talk about a responsible early night then ignore that plan",
+          "Ask ourselves how we ended up in this situation again"
+        ],
+        correctIndex: 2
+      },
+      {
+        title: "On the wedding day, how late are you allowed to be",
+        body:
+          "Think carefully, your answer is legally binding in the group chat.",
+        options: [
+          "Early, for once in your life",
+          "On time, which is already a miracle",
+          "Late, but with coffee and a good story"
+        ],
+        correctIndex: 0
       }
     ];
 
-    let state = "intro"; // intro, playing, betweenLevels, finalQuestion, finalAnswer
-    let currentMissionIndex = 0;
-    let goodCaught = 0;
-    let badHit = 0;
-
-    const player = {
-      lane: 0, // 0 top, 1 bottom
-      x: 80,
-      radius: 16
-    };
-
-    const lanesY = [canvas.height * 0.32, canvas.height * 0.7];
-
-    const items = [];
-    let lastSpawnTime = 0;
-    let spawnInterval = 700; // ms
-    let lastFrameTime = performance.now();
-
-    const goodIcons = ["🥃", "🎉", "🤵‍♂️", "🍕"];
-    const badIcons = ["😵", "⏰", "💸"];
-
-    function resetMission(index) {
-      currentMissionIndex = index;
-      goodCaught = 0;
-      badHit = 0;
-      items.length = 0;
-      lastSpawnTime = 0;
-      hudMission.textContent = missions[currentMissionIndex].name;
-      hudScore.textContent = "0";
-      hudBad.textContent = "0";
-      player.lane = 0;
-    }
+    let currentIndex = 0;
+    let score = 0;
 
     function showCard(card) {
-      [introCard, levelCard, finalQuestionCard, finalAnswerCard].forEach(c => {
-        c.classList.remove("visible");
+      [cardIntro, cardQuestion, cardResult, cardFinal].forEach(c => {
+        c.classList.remove("active");
       });
-      if (card) {
-        card.classList.add("visible");
-      }
+      card.classList.add("active");
     }
 
-    function startGame() {
-      state = "playing";
-      resetMission(0);
-      showCard(null);
+    function updateHud() {
+      const total = questions.length;
+      const current = Math.min(currentIndex + 1, total);
+      hudQuestion.textContent = `${current} / ${total}`;
+      hudScore.textContent = String(score);
     }
 
-    function goToNextMission() {
-      if (currentMissionIndex + 1 < missions.length) {
-        resetMission(currentMissionIndex + 1);
-        state = "playing";
-        showCard(null);
+    function renderQuestion() {
+      const q = questions[currentIndex];
+      questionTag.textContent = `Question ${currentIndex + 1}`;
+      questionTitle.textContent = q.title;
+      questionBody.textContent = q.body;
+
+      // Clear old options
+      optionsContainer.innerHTML = "";
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        const labelSpan = document.createElement("span");
+        labelSpan.className = "label";
+        labelSpan.textContent = opt;
+        const keySpan = document.createElement("span");
+        keySpan.className = "key";
+        keySpan.textContent = `${idx + 1}`;
+        btn.appendChild(labelSpan);
+        btn.appendChild(keySpan);
+
+        btn.addEventListener("click", () => handleAnswer(idx));
+        optionsContainer.appendChild(btn);
+      });
+
+      // Slightly change hint text on last question
+      if (currentIndex === questions.length - 1) {
+        questionHint.textContent =
+          "Last one. Answer carefully, your Best Man or Groomsman status depends on this. Kind of.";
       } else {
-        state = "finalQuestion";
-        showCard(finalQuestionCard);
+        questionHint.textContent =
+          "Answer based on our real history, not the responsible version of us.";
+      }
+
+      updateHud();
+    }
+
+    function handleAnswer(selectedIndex) {
+      const q = questions[currentIndex];
+      if (selectedIndex === q.correctIndex) {
+        score += 1;
+      }
+
+      if (currentIndex + 1 < questions.length) {
+        currentIndex += 1;
+        renderQuestion();
+      } else {
+        showResult();
       }
     }
 
-    function handleMissionComplete() {
-      state = "betweenLevels";
-      levelTitle.textContent = missions[currentMissionIndex].name + " complete";
-      levelBody.textContent = missions[currentMissionIndex].description.replace(
-        "Collect",
-        "You collected"
-      );
-      levelGoodCount.textContent = String(goodCaught);
-      showCard(levelCard);
-    }
+    function showResult() {
+      const total = questions.length;
+      const s = score;
+      let titleText = "";
+      let bodyText = "";
 
-    function handleYesAnswer() {
-      state = "finalAnswer";
-      showCard(finalAnswerCard);
-    }
-
-    function update(dt) {
-      if (state !== "playing") return;
-
-      // Spawn items
-      const now = performance.now();
-      if (now - lastSpawnTime > spawnInterval) {
-        lastSpawnTime = now;
-        const lane = Math.random() < 0.5 ? 0 : 1;
-        const isGood = Math.random() < 0.7; // 70 percent chance good
-        const iconList = isGood ? goodIcons : badIcons;
-        const icon = iconList[Math.floor(Math.random() * iconList.length)];
-
-        items.push({
-          lane,
-          x: canvas.width + 40,
-          y: lanesY[lane],
-          radius: 14,
-          icon,
-          good: isGood
-        });
+      if (s >= total - 1) {
+        titleText = "Certified legendary";
+        bodyText =
+          `${guestName}, you scored ${s} out of ${total}. ` +
+          "You clearly know the chaos, the vibes, and the way this is supposed to go. " +
+          "You are absolutely " + displayRole + " material.";
+      } else if (s >= Math.floor(total / 2)) {
+        titleText = "You passed, barely";
+        bodyText =
+          `${guestName}, you scored ${s} out of ${total}. ` +
+          "Some of these answers were a bit suspicious, but honestly that fits our brand. " +
+          "I still cannot imagine this without you as my " + displayRole + ".";
+      } else {
+        titleText = "Very suspicious, but still in";
+        bodyText =
+          `${guestName}, you scored ${s} out of ${total}. ` +
+          "On paper this looks like a fail, but in real life you have been there for all the important moments. " +
+          "You are still my choice for " + displayRole + ".";
       }
 
-      // Move items
-      const speed = 190; // px per second
-      for (let i = items.length - 1; i >= 0; i--) {
-        items[i].x -= speed * (dt / 1000);
+      resultTitle.textContent = titleText;
+      resultBody.textContent = bodyText +
+        " There is only one real question left now.";
 
-        // Collision with player
-        const dx = items[i].x - player.x;
-        const dy = items[i].y - lanesY[player.lane];
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < player.radius + items[i].radius) {
-          if (items[i].good) {
-            goodCaught++;
-            hudScore.textContent = String(goodCaught);
-          } else {
-            badHit++;
-            hudBad.textContent = String(badHit);
-          }
-          items.splice(i, 1);
-          continue;
-        }
+      resultScoreText.textContent = `${s} / ${total}`;
 
-        // Remove off screen
-        if (items[i].x < -60) {
-          items.splice(i, 1);
-        }
-      }
+      const askLine = isBestMan
+        ? `Will you be one of my Best Men, ${guestName}`
+        : `Will you be my Groomsman, ${guestName}`;
 
-      const targetGood = missions[currentMissionIndex].targetGood;
-      if (goodCaught >= targetGood) {
-        handleMissionComplete();
-      }
+      btnYes1Text.textContent = "Yes, obviously";
+      btnYes2Text.textContent = "I was born for this";
+
+      // Adjust result body to end with the ask line
+      resultBody.textContent += `\n\n${askLine} ?`;
+
+      showCard(cardResult);
     }
 
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function showFinal(answerVariant) {
+      let title, body;
 
-      // Background gradient
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, "#020617");
-      gradient.addColorStop(1, "#020617");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Lane highlights
-      for (let i = 0; i < 2; i++) {
-        const y = lanesY[i];
-        ctx.save();
-        ctx.strokeStyle = "rgba(51,65,85,0.8)";
-        ctx.lineWidth = 1;
-        ctx.setLineDash([6, 6]);
-        ctx.beginPath();
-        ctx.moveTo(18, y);
-        ctx.lineTo(canvas.width - 18, y);
-        ctx.stroke();
-        ctx.restore();
+      if (answerVariant === 1) {
+        title = "Locked in";
+        body =
+          `${guestName}, consider this official. ` +
+          `You are my ${displayRole}. ` +
+          "Suit up, bring your chaos, and be ready for all the good pressure.";
+      } else {
+        title = "Exactly the right answer";
+        body =
+          `${guestName}, I knew you would say that. ` +
+          `You are my ${displayRole}. ` +
+          "We will do this properly, with good stories and maybe slightly too many drinks.";
       }
 
-      // Player
-      const px = player.x;
-      const py = lanesY[player.lane];
-
-      ctx.save();
-      const playerGradient = ctx.createRadialGradient(
-        px - 4,
-        py - 6,
-        4,
-        px,
-        py,
-        26
-      );
-      playerGradient.addColorStop(0, "#facc15");
-      playerGradient.addColorStop(1, "#f97316");
-      ctx.fillStyle = playerGradient;
-      ctx.beginPath();
-      ctx.arc(px, py, player.radius + 2, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#111827";
-      ctx.beginPath();
-      ctx.arc(px, py, player.radius - 2, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.font = "18px system-ui";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = "#f9fafb";
-      ctx.fillText("😎", px, py + 1);
-      ctx.restore();
-
-      // Items
-      items.forEach(item => {
-        ctx.save();
-        ctx.font = "20px system-ui";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(item.icon, item.x, item.y);
-        ctx.restore();
-      });
+      finalTitle.textContent = title;
+      finalBody.textContent =
+        body + " Screenshot this if you want proof, then text me so we can plan.";
+      showCard(cardFinal);
     }
 
-    function gameLoop(timestamp) {
-      const dt = timestamp - lastFrameTime;
-      lastFrameTime = timestamp;
+    function initPersonalization() {
+      roleLabel.textContent = isBestMan ? "Best Man Invite" : "Groomsman Invite";
 
-      update(dt);
-      draw();
-
-      requestAnimationFrame(gameLoop);
+      introTitle.textContent = `Welcome, ${guestName}`;
+      introBody.innerHTML =
+        `This is your <strong>${displayRole} Qualification Test</strong>, ` +
+        "also known as the Worst Man stress test.<br /><br />" +
+        "You will get a few quick questions about our chaos and my life choices. " +
+        "There is no official pass mark, but I will absolutely judge you silently.";
     }
 
-    // Input
-    laneTopBtn.addEventListener("click", () => {
-      player.lane = 0;
+    // Event bindings
+    btnStart.addEventListener("click", () => {
+      currentIndex = 0;
+      score = 0;
+      renderQuestion();
+      showCard(cardQuestion);
     });
 
-    laneBottomBtn.addEventListener("click", () => {
-      player.lane = 1;
-    });
+    btnYes1.addEventListener("click", () => showFinal(1));
+    btnYes2.addEventListener("click", () => showFinal(2));
 
-    // Keyboard support for testing on desktop
-    window.addEventListener("keydown", e => {
-      if (e.key === "ArrowUp" || e.key === "w") {
-        player.lane = 0;
-      } else if (e.key === "ArrowDown" || e.key === "s") {
-        player.lane = 1;
-      }
-    });
-
-    // Buttons for overlay cards
-    btnStart.addEventListener("click", startGame);
-    btnNextMission.addEventListener("click", goToNextMission);
-    btnYesPrimary.addEventListener("click", handleYesAnswer);
-    btnYesSecondary.addEventListener("click", handleYesAnswer);
     btnDone.addEventListener("click", () => {
-      // Simple close action, no navigation required
-      finalAnswerCard.classList.remove("visible");
+      // Nothing fancy here, they can close the tab or go back
+      cardFinal.classList.remove("active");
+      cardFinal.classList.add("active"); // keep visible but swallow taps
     });
 
-    // Initialize
-    setupPersonalization();
-    showCard(introCard);
-    hudMission.textContent = "Briefing";
-
-    lastFrameTime = performance.now();
-    requestAnimationFrame(gameLoop);
+    // Init
+    initPersonalization();
+    updateHud();
   </script>
 </body>
 </html>
