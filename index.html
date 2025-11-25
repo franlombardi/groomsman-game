@@ -946,6 +946,8 @@
         btnDone.disabled = true;
         const doneLabel = btnDone.querySelector('span:last-child');
         if (doneLabel) doneLabel.textContent = 'Listo ✅';
+        // Hide the button entirely from the UI
+        btnDone.style.display = 'none';
       }
 
       // Fallback: show a small notice (we keep the final card visible) — add it only once
