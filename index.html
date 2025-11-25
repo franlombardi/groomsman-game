@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Best Man Qualification Test</title>
+  <title>Misión Lisboa 2026</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <style>
   :root {
     /* Light wedding palette */
-    --bg-page: #f7f1eb;         /* page background, light cream */
+    --bg-page: #3f5e42;         /* page background, light cream */
     --card-bg: #ffffff;         /* main card background */
     --card-border: #e2d7c9;     /* soft beige border */
 
@@ -361,8 +361,8 @@
   <div class="app">
     <header>
       <div class="title-block">
-        <span class="subtitle">Mini mission</span>
-        <h1>Best Man Qualification Test</h1>
+        <span class="subtitle">Mini misión</span>
+        <h1>Misión Lisboa 2026</h1>
       </div>
       <div class="badge">
         <span class="icon">🤵‍♂️</span>
@@ -382,7 +382,7 @@
     </div>
 
     <div class="hint">
-      All you have to do is tap the option that feels most correct. No lifelines, only instinct.
+      Todo lo que tienes que hacer es tocar la opción que te parezca más correcta. Sin ayuda, solo instinto.
     </div>
 
     <!-- Intro card -->
@@ -400,11 +400,11 @@
         <div class="btn-row">
           <button id="btnStart" class="btn btn-primary">
             <span class="icon">▶️</span>
-            <span>Start the test</span>
+            <span>Comenzar</span>
           </button>
         </div>
         <div class="small-text">
-          Warning: failing this quiz will not remove you from the invite list, but it might affect the amount of teasing you get.
+          Hazle screenshot al resultado cuando termines.
         </div>
       </div>
     </div>
@@ -412,27 +412,27 @@
     <!-- Question card -->
     <div id="cardQuestion" class="card">
       <div>
-        <div class="card-header-tag" id="questionTag">Question</div>
-        <div class="card-title" id="questionTitle">Question goes here</div>
+        <div class="card-header-tag" id="questionTag">Pregunta</div>
+        <div class="card-title" id="questionTitle">Pregunta</div>
         <div class="card-body" id="questionBody">
-          Pick the one that feels most correct. There is only one official answer, but vibes matter.
+          Escoge la opción que te parezca más correcta. Solo hay una respuesta oficial, pero los vibes importan.
         </div>
         <div class="options" id="optionsContainer">
           <!-- buttons inserted here by JS -->
         </div>
       </div>
       <div class="small-text" id="questionHint">
-        Tip: answer based on what you know about me, not what you think is the polite answer.
+        Consejo: responde basándote en lo que sabes de mí, no en lo que crees que es la respuesta educada.
       </div>
     </div>
 
     <!-- Result card -->
     <div id="cardResult" class="card">
       <div>
-        <div class="card-header-tag">Debrief</div>
-        <div class="card-title" id="resultTitle">You survived the test</div>
+        <div class="card-header-tag">Resultados</div>
+        <div class="card-title" id="resultTitle">Sobreviviste a la prueba</div>
         <div class="card-body" id="resultBody">
-          Placeholder text for result body.
+          Texto de resultado.
         </div>
       </div>
       <div>
@@ -468,11 +468,11 @@
         <div class="btn-row">
           <button id="btnDone" class="btn btn-primary">
             <span class="icon">📲</span>
-            <span>Got it</span>
+            <span>Listo</span>
           </button>
         </div>
         <div class="small-text">
-          You can close this tab, but the responsibility is now permanent.
+          Puedes cerrar esta pestaña, pero la responsabilidad ahora es permanente.
         </div>
       </div>
     </div>
@@ -503,6 +503,7 @@
     const peopleConfig = {
       diego: {
         fullName: "Diego Sabal",
+        nickname: "Dieguishhh",
         role: "Best Man",
         finalImage: "images/diego-final.jpg",
         questions: [
@@ -540,6 +541,7 @@
       },
       marco: {
         fullName: "Marco Guarente",
+        nickname: "Marcookie",
         role: "Best Man",
         finalImage: "images/marco-final.jpg",
         questions: [
@@ -577,6 +579,7 @@
       },
       gabriel: {
         fullName: "Gabriel Sosa",
+        nickname: "Gaibiri",
         role: "Groomsman",
         finalImage: "images/gabriel-final.jpg",
         questions: [
@@ -614,6 +617,7 @@
       },
       guillermo: {
         fullName: "Guillermo Stalhuth",
+        nickname: "Guille",
         role: "Groomsman",
         finalImage: "images/guillermo-final.jpg",
         questions: [
@@ -651,6 +655,7 @@
       },
       andres: {
         fullName: "Andres Sabal",
+        nickname: "Andres",
         role: "Groomsman",
         finalImage: "images/andres-final.jpg",
         questions: [
@@ -688,6 +693,7 @@
       },
       daniel: {
         fullName: "Daniel Najul",
+        nickname: "Daaaaaani",
         role: "Groomsman",
         finalImage: "images/daniel-final.jpg",
         questions: [
@@ -789,7 +795,7 @@
     // Render a question and wire up answer buttons
     function renderQuestion() {
       const q = questions[currentIndex];
-      questionTag.textContent = `Question ${currentIndex + 1}`;
+      questionTag.textContent = `Pregunta ${currentIndex + 1}`;
       questionTitle.textContent = q.title;
       questionBody.textContent = q.body;
 
@@ -813,8 +819,8 @@
       });
 
       questionHint.textContent = (currentIndex === questions.length - 1)
-        ? 'Last one. Answer carefully (you get one attempt).' 
-        : 'Answer honestly. You get one attempt per question; the correct answer will show after.';
+        ? 'La última. Responde con cuidado (tienes un intento).' 
+        : 'Responde honestamente. Tienes un intento por pregunta; la respuesta correcta aparecerá después.';
 
       updateHud();
     }
@@ -845,7 +851,7 @@
       }
 
       // show explicit feedback showing what they chose and the correct answer
-      questionHint.textContent = `You answered: "${chosenText}" — Correct: "${correctText}"`;
+      questionHint.textContent = `Respondiste: "${chosenText}" — Correcto: "${correctText}"`;
       updateHud();
 
       // advance after a short pause so they can read the feedback
@@ -866,29 +872,29 @@
 
       let titleText, bodyText;
       if (score >= total - 1) {
-        titleText = 'Certified legendary';
-        bodyText = `${guestName}, you nailed it with ${score}/${total}. You're obviously main-squad material.`;
+        titleText = 'Eres leyenda certificada';
+        bodyText = `${guestName}, lo hiciste perfecto con ${score}/${total}. Claramente eres material de primera línea.`;
       } else if (score >= Math.floor(total / 2)) {
-        titleText = 'You passed, barely';
-        bodyText = `${guestName}, ${score}/${total}. Solid, slightly suspicious, but accepted.`;
+        titleText = 'Pasaste, apenas';
+        bodyText = `${guestName}, ${score}/${total}. Sólido, un poco sospechoso, pero aceptado.`;
       } else {
-        titleText = 'Very suspicious, but still in';
-        bodyText = `${guestName}, only ${score}/${total}. Still chosen — this is personal.`;
+        titleText = 'Muy sospechoso, pero aún estás dentro';
+        bodyText = `${guestName}, solo ${score}/${total}. Aún así elegido — esto es personal.`;
       }
 
       // summary includes wrong count
       resultTitle.textContent = titleText;
-      resultBody.textContent = bodyText + ` You had ${wrongCount} incorrect attempt(s).`;
+      resultBody.textContent = bodyText + ` Tuviste ${wrongCount} intento(s) incorrecto(s).`;
 
       // set up final choice buttons: both confirm the fixed role (derived from name)
       btnYes1.querySelector('span.label')?.remove?.();
       btnYes2.querySelector('span.label')?.remove?.();
       // Button 1: accept with correct fixed role
       btnYes1.innerHTML = finalRole === 'Best Man'
-        ? '<span class="icon">👑</span><span>Be my Best Man</span>'
-        : '<span class="icon">🤝</span><span>Be my Groomsman</span>';
+        ? '<span class="icon">👑</span><span>Ser tu Best Man</span>'
+        : '<span class="icon">🤝</span><span>Ser tu Groomsman</span>';
       // Button 2: funny resigned accept (same result)
-      btnYes2.innerHTML = '<span class="icon">🔥</span><span>F*** it, I accept. I have no choice.</span>';
+      btnYes2.innerHTML = '<span class="icon">🔥</span><span>Está bien, acepto. No tengo opción.</span>';
 
       // Both buttons confirm the same fixed role
       btnYes1.onclick = () => chooseFinalRole(finalRole);
@@ -902,11 +908,11 @@
       chosenRole = role;
       // Final card must clearly state the fixed role and use a short warm message
       if (role === 'Best Man') {
-        finalTitle.textContent = 'You are my Best Man';
-        finalBody.textContent = `${guestName}, you are officially my Best Man. Screenshot this and text me so we can plan the chaos.`;
+        finalTitle.textContent = 'Eres mi Best Man';
+        finalBody.textContent = `${guestName}, oficialmente eres mi Best Man. Toma captura de pantalla y mándame un mensaje para que podamos planificar el caos.`;
       } else {
-        finalTitle.textContent = 'You are my Groomsman';
-        finalBody.textContent = `${guestName}, you are officially my Groomsman. Screenshot this and text me so we can plan the chaos.`;
+        finalTitle.textContent = 'Eres mi Groomsman';
+        finalBody.textContent = `${guestName}, oficialmente eres mi Groomsman. Toma captura de pantalla y mándame un mensaje para que podamos planificar el caos.`;
       }
       
       // Add the final photo if person config exists
@@ -929,21 +935,21 @@
       // Best effort: browsers usually only allow window.close() on windows opened via script.
       try { window.close(); } catch (e) { /* ignore */ }
       // Fallback: show a small notice (we keep the final card visible)
-      finalBody.textContent += ' If this tab did not close automatically, you can safely close it now.';
+      finalBody.textContent += ' Si la pestaña no se cierra, puedes cerrarla manualmente.';
     }
 
     // Initialization and bindings
     function initPersonalization() {
       if (person) {
-        roleLabel.textContent = person.role === 'Best Man' ? 'Best Man Invite' : 'Groomsman Invite';
-        introTitle.textContent = `Welcome, ${guestName}`;
-        introBody.innerHTML = `This is your <strong>${person.role} Qualification Test</strong>.<br><br>Answer honestly. You get one attempt per question; the correct answer will show after.`;
+        roleLabel.textContent = person.role === 'Best Man' ? 'Boda 2026' : 'Boda 2026';
+        introTitle.textContent = `${person.nickname}, necesito que pases esta mini misión.`;
+        introBody.innerHTML = `Esto es una mini misión para la boda en Lisboa, el 20 de septiembre de 2026.<br><br>Son pocas preguntas rápidas sobre nosotros y sobre cómo ves todo este desastre organizado. No hay nota mínima oficial, pero sí voy a estar pendiente de tus respuestas.`;
       } else {
-        roleLabel.textContent = 'Invalid Link';
-        introTitle.textContent = 'Oops!';
-        introBody.innerHTML = '<strong>This invite link is not configured.</strong><br><br>Please text me for the correct link.';
+        roleLabel.textContent = 'Enlace Inválido';
+        introTitle.textContent = '¡Oops!';
+        introBody.innerHTML = '<strong>Este enlace no está configurado.</strong><br><br>Escríbeme para pedir el link correcto.';
         btnStart.disabled = true;
-        btnStart.textContent = 'Invalid Link';
+        btnStart.textContent = 'Enlace Inválido';
       }
     }
 
