@@ -778,6 +778,8 @@
     let currentIndex = 0;
     let score = 0;
     let wrongCount = 0;
+    // ensure finalize action runs only once
+    let hasFinalized = false;
     const attemptsPerQuestion = new Array(questions.length).fill(0);
     let chosenRole = null; // Final role chosen by user
 
@@ -932,10 +934,25 @@
 
     // Attempt to close the tab/window when they click Done
     function finalizeAndClose() {
+      // Prevent multiple activations
+      if (hasFinalized) return;
+      hasFinalized = true;
+
       // Best effort: browsers usually only allow window.close() on windows opened via script.
       try { window.close(); } catch (e) { /* ignore */ }
-      // Fallback: show a small notice (we keep the final card visible)
-      finalBody.textContent += ' Si la pestaña no se cierra, puedes cerrarla manualmente.';
+
+      // Disable the button and give feedback
+      if (btnDone) {
+        btnDone.disabled = true;
+        const doneLabel = btnDone.querySelector('span:last-child');
+        if (doneLabel) doneLabel.textContent = 'Listo ✅';
+      }
+
+      // Fallback: show a small notice (we keep the final card visible) — add it only once
+      const note = ' Si la pestaña no se cierra, puedes cerrarla manualmente.';
+      if (!finalBody.textContent.includes('Si la pestaña no se cierra')) {
+        finalBody.textContent += note;
+      }
     }
 
     // Initialization and bindings
