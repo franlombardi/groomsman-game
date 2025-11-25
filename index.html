@@ -334,6 +334,15 @@
     color: var(--accent-soft);
   }
 
+  .final-photo {
+    width: 100%;
+    max-width: 280px;
+    margin: 16px auto 0;
+    border-radius: 12px;
+    display: block;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+  }
+
   @media (max-width: 380px) {
     .app {
       border-radius: 20px;
@@ -476,10 +485,10 @@
   <script>
     /*
       Structure: Single-file SPA with four cards (Intro, Question, Result, Final).
-      - Reads `name` and `role` from URL params.
-      - Chooses a per-person question set (named sets or seeded shuffle).
-      - Shows questions one at a time; wrong answers are indicated and user may retry until correct.
-      - Tracks attempts and wrong counts, then asks the user to pick Best Man or Groomsman.
+      - Reads `id` from URL params and looks up the person's config.
+      - Each person has their own name, role, questions, and final image.
+      - Shows questions one at a time; single attempt per question with feedback.
+      - Tracks attempts and wrong counts, then shows the final card with the person's image.
     */
 
     // Utility: read URL query parameter with default
@@ -489,12 +498,245 @@
       return value ? decodeURIComponent(value) : defaultValue;
     }
 
-    // Personalization
-    const guestName = getQueryParam("name", "my friend");
-    const guestRoleRaw = getQueryParam("role", "Groomsman");
-    const isBestManParam = guestRoleRaw.toLowerCase().includes("best");
-    // Final role is fixed by guest name: Marco Guarente and Diego Sabal are Best Men
-    const finalRole = (guestName === "Marco Guarente" || guestName === "Diego Sabal") ? "Best Man" : "Groomsman";
+    // ==================== Per-person configuration ====================
+    // Each person config: name, role, finalImage path, and their 5 questions.
+    const peopleConfig = {
+      diego: {
+        fullName: "Diego Sabal",
+        role: "Best Man",
+        finalImage: "images/diego-final.jpg",
+        questions: [
+          {
+            title: "How do we usually start a night out?",
+            body: "The ritual.",
+            options: ["With a plan", "With snacks", "No plan, chaos"],
+            correctIndex: 2
+          },
+          {
+            title: "Which song will get us singing?",
+            body: "You should know this one.",
+            options: ["A classic", "Something sad", "A meme song"],
+            correctIndex: 0
+          },
+          {
+            title: "My worst cooking disaster",
+            body: "Don't be gentle.",
+            options: ["Burnt pasta", "Fire alarm incident", "Salt overload"],
+            correctIndex: 1
+          },
+          {
+            title: "Who brings the energy?",
+            body: "Honestly.",
+            options: ["You", "Me", "The DJ"],
+            correctIndex: 0
+          },
+          {
+            title: "On the wedding, what's essential?",
+            body: "Practical essentials only.",
+            options: ["A speech", "A plan", "Snacks"],
+            correctIndex: 1
+          }
+        ]
+      },
+      marco: {
+        fullName: "Marco Guarente",
+        role: "Best Man",
+        finalImage: "images/marco-final.jpg",
+        questions: [
+          {
+            title: "Where did we first embarrass ourselves together?",
+            body: "The true origin story.",
+            options: ["At a party", "In class", "On a terrible road trip"],
+            correctIndex: 2
+          },
+          {
+            title: "My go-to late night snack",
+            body: "Two words.",
+            options: ["Cold pizza", "Sardines", "Ice cream"],
+            correctIndex: 0
+          },
+          {
+            title: "Who forgets things more often?",
+            body: "You know the answer.",
+            options: ["Me", "You", "Depends on the day"],
+            correctIndex: 1
+          },
+          {
+            title: "Pre-wedding drink of choice",
+            body: "Set the vibe.",
+            options: ["Whiskey neat", "Gin & tonic", "A beer"],
+            correctIndex: 0
+          },
+          {
+            title: "On the wedding day, punctuality is",
+            body: "Pick the right attitude.",
+            options: ["Mandatory", "Flexible", "An admirable suggestion"],
+            correctIndex: 0
+          }
+        ]
+      },
+      gabriel: {
+        fullName: "Gabriel Sosa",
+        role: "Groomsman",
+        finalImage: "images/gabriel-final.jpg",
+        questions: [
+          {
+            title: "How did we first meet?",
+            body: "The origin story.",
+            options: ["At a party", "Through a friend", "At work"],
+            correctIndex: 1
+          },
+          {
+            title: "My first go-to drink",
+            body: "Know me well.",
+            options: ["Beer", "Whiskey", "Wine"],
+            correctIndex: 0
+          },
+          {
+            title: "Who is more spontaneous?",
+            body: "Honesty.",
+            options: ["You", "Me", "It depends"],
+            correctIndex: 0
+          },
+          {
+            title: "Perfect night out looks like",
+            body: "What's our style?",
+            options: ["Dinner and drinks", "Chaos and laughs", "Low key hangout"],
+            correctIndex: 1
+          },
+          {
+            title: "Wedding day energy",
+            body: "Set the tone.",
+            options: ["Calm and cool", "Hyped up", "Just go with it"],
+            correctIndex: 2
+          }
+        ]
+      },
+      guillermo: {
+        fullName: "Guillermo Stalhuth",
+        role: "Groomsman",
+        finalImage: "images/guillermo-final.jpg",
+        questions: [
+          {
+            title: "How would you describe our friendship?",
+            body: "Real answer.",
+            options: ["Just met", "Old friends", "Brothers"],
+            correctIndex: 2
+          },
+          {
+            title: "My favorite weekend activity",
+            body: "Think about it.",
+            options: ["Sports", "Hiking", "Hanging with friends"],
+            correctIndex: 2
+          },
+          {
+            title: "When I'm stressed, I",
+            body: "Real talk.",
+            options: ["Talk it out", "Work it out physically", "Take time alone"],
+            correctIndex: 1
+          },
+          {
+            title: "Best advice you'd give me",
+            body: "No pressure.",
+            options: ["Work hard", "Live in the moment", "Stay humble"],
+            correctIndex: 2
+          },
+          {
+            title: "What role are you perfect for?",
+            body: "Final check.",
+            options: ["Best man", "Groomsman", "Both equally"],
+            correctIndex: 1
+          }
+        ]
+      },
+      andres: {
+        fullName: "Andres Sabal",
+        role: "Groomsman",
+        finalImage: "images/andres-final.jpg",
+        questions: [
+          {
+            title: "Our shared memories are mostly",
+            body: "Think back.",
+            options: ["Fun and crazy", "Thoughtful and deep", "Both"],
+            correctIndex: 0
+          },
+          {
+            title: "You'd describe me as",
+            body: "Be honest.",
+            options: ["The planner", "The wild one", "The listener"],
+            correctIndex: 1
+          },
+          {
+            title: "Best time we've had together",
+            body: "Favorite moment.",
+            options: ["On a trip", "Just hanging out", "At a big event"],
+            correctIndex: 0
+          },
+          {
+            title: "What I value most in friends",
+            body: "Core value.",
+            options: ["Loyalty", "Fun", "Honesty"],
+            correctIndex: 0
+          },
+          {
+            title: "Why should you be my groomsman?",
+            body: "Final answer.",
+            options: ["You know me best", "You'll have fun", "You're reliable"],
+            correctIndex: 2
+          }
+        ]
+      },
+      daniel: {
+        fullName: "Daniel Najul",
+        role: "Groomsman",
+        finalImage: "images/daniel-final.jpg",
+        questions: [
+          {
+            title: "How long have we known each other?",
+            body: "Time check.",
+            options: ["A few years", "Many years", "Since childhood"],
+            correctIndex: 1
+          },
+          {
+            title: "My personality in one word",
+            body: "Quick assessment.",
+            options: ["Energetic", "Chill", "Thoughtful"],
+            correctIndex: 2
+          },
+          {
+            title: "Best way to celebrate is",
+            body: "My style.",
+            options: ["Big party", "Intimate dinner", "Adventure"],
+            correctIndex: 0
+          },
+          {
+            title: "What keeps our friendship strong",
+            body: "Real foundation.",
+            options: ["Common interests", "Genuine care", "Fun times"],
+            correctIndex: 1
+          },
+          {
+            title: "You're excited to be my groomsman because",
+            body: "Final thought.",
+            options: ["It's an honor", "It'll be fun", "Both"],
+            correctIndex: 2
+          }
+        ]
+      }
+    };
+
+    // Read person id from URL
+    const personId = getQueryParam("id", null);
+    let person = null;
+    
+    if (personId && peopleConfig[personId]) {
+      person = peopleConfig[personId];
+    }
+
+    // Personalization: derived from person config
+    const guestName = person ? person.fullName : "my friend";
+    const finalRole = person ? person.role : "Groomsman";
+    const isBestManParam = finalRole === "Best Man";
 
     // DOM refs
     const roleLabel = document.getElementById("roleLabel");
@@ -523,155 +765,8 @@
     const btnStart = document.getElementById("btnStart");
     const btnDone = document.getElementById("btnDone");
 
-    // ---------------------- per-person question sets -----------------------
-    // Add entries here for friends you want to give custom questions to.
-    const namedQuestionSets = {
-      "Marco Guarente": [
-        {
-          title: "Where did we first embarrass ourselves together?",
-          body: "The true origin story.",
-          options: ["At a party", "In class", "On a terrible road trip"],
-          correctIndex: 2
-        },
-        {
-          title: "My go-to late night snack",
-          body: "Two words.",
-          options: ["Cold pizza", "Sardines", "Ice cream"],
-          correctIndex: 0
-        },
-        {
-          title: "Who forgets things more often?",
-          body: "You know the answer.",
-          options: ["Me", "You", "Depends on the day"],
-          correctIndex: 1
-        },
-        {
-          title: "Pre-wedding drink of choice",
-          body: "Set the vibe.",
-          options: ["Whiskey neat", "Gin & tonic", "A beer"],
-          correctIndex: 0
-        },
-        {
-          title: "On the wedding day, punctuality is",
-          body: "Pick the right attitude.",
-          options: ["Mandatory", "Flexible", "An admirable suggestion"],
-          correctIndex: 0
-        }
-      ],
-      "Diego Sabal": [
-        {
-          title: "How do we usually start a night out?",
-          body: "The ritual.",
-          options: ["With a plan", "With snacks", "No plan, chaos"],
-          correctIndex: 2
-        },
-        {
-          title: "Which song will get us singing?",
-          body: "You should know this one.",
-          options: ["A classic", "Something sad", "A meme song"],
-          correctIndex: 0
-        },
-        {
-          title: "My worst cooking disaster",
-          body: "Don't be gentle.",
-          options: ["Burnt pasta", "Fire alarm incident", "Salt overload"],
-          correctIndex: 1
-        },
-        {
-          title: "Who brings the energy?",
-          body: "Honestly.",
-          options: ["You", "Me", "The DJ"],
-          correctIndex: 0
-        },
-        {
-          title: "On the wedding, what's essential?",
-          body: "Practical essentials only.",
-          options: ["A speech", "A plan", "Snacks"],
-          correctIndex: 1
-        }
-      ]
-    };
-
-    // Default pool (will be shuffled deterministically per guest name)
-    const defaultQuestions = [
-      {
-        title: "How did we actually meet",
-        body: "There is the official story, and then the truth.",
-        options: ["Through some normal adult thing", "Through a reckless plan", "At a wedding"],
-        correctIndex: 1
-      },
-      {
-        title: "First drink I order",
-        body: "Know the vibe.",
-        options: ["Beer", "Something classic", "A shot of something scary"],
-        correctIndex: 1
-      },
-      {
-        title: "Who panics more?",
-        body: "Honesty only.",
-        options: ["Me", "You", "Depends on the situation"],
-        correctIndex: 0
-      },
-      {
-        title: "Default plan when lost",
-        body: "We have a type.",
-        options: ["Ask for directions", "Keep driving", "Find food and regroup"],
-        correctIndex: 2
-      },
-      {
-        title: "Wedding day lateness allowance",
-        body: "Set the expectation.",
-        options: ["Early", "On time", "A little late with coffee"],
-        correctIndex: 0
-      }
-    ];
-
-    // Simple seeded shuffle (mulberry32)
-    function hashStringToSeed(str) {
-      let h = 2166136261 >>> 0;
-      for (let i = 0; i < str.length; i++) {
-        h ^= str.charCodeAt(i);
-        h = Math.imul(h, 16777619) >>> 0;
-      }
-      return h;
-    }
-
-    function mulberry32(a) {
-      return function() {
-        a |= 0; a = a + 0x6D2B79F5 | 0;
-        let t = Math.imul(a ^ a >>> 15, 1 | a);
-        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
-      };
-    }
-
-    function seededShuffle(arr, seed) {
-      const rnd = mulberry32(seed);
-      const a = arr.slice();
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(rnd() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-
-    function getQuestionsForName(name) {
-      const key = (name || "").trim();
-      if (namedQuestionSets[key]) {
-        return namedQuestionSets[key];
-      }
-      const seed = hashStringToSeed(key || "default-seed");
-      return seededShuffle(defaultQuestions, seed);
-    }
-
-    // Choose questions for this guest (always 5 questions expected)
-    let questions = getQuestionsForName(guestName);
-    // Ensure exactly 5 items (trim or pad with defaultQuestions)
-    if (questions.length > 5) questions = questions.slice(0, 5);
-    if (questions.length < 5) {
-      const extra = defaultQuestions.slice(0, 5 - questions.length);
-      questions = questions.concat(extra);
-    }
+    // Get questions from person config
+    const questions = person ? person.questions : [];
 
     // State
     let currentIndex = 0;
@@ -813,6 +908,19 @@
         finalTitle.textContent = 'You are my Groomsman';
         finalBody.textContent = `${guestName}, you are officially my Groomsman. Screenshot this and text me so we can plan the chaos.`;
       }
+      
+      // Add the final photo if person config exists
+      const existingImg = cardFinal.querySelector('.final-photo');
+      if (existingImg) existingImg.remove();
+      
+      if (person && person.finalImage) {
+        const img = document.createElement('img');
+        img.className = 'final-photo';
+        img.src = person.finalImage;
+        img.alt = `${guestName}'s photo`;
+        cardFinal.querySelector('.card-body')?.appendChild(img) || cardFinal.appendChild(img);
+      }
+      
       showCard(cardFinal);
     }
 
@@ -826,14 +934,24 @@
 
     // Initialization and bindings
     function initPersonalization() {
-      roleLabel.textContent = isBestManParam ? 'Best Man Invite' : 'Groomsman Invite';
-      introTitle.textContent = `Welcome, ${guestName}`;
-      introBody.innerHTML = `This is your <strong>${isBestManParam ? 'Best Man' : 'Groomsman'} Qualification Test</strong>.<br><br>Answer honestly. Wrong picks let you retry until you get it right.`;
+      if (person) {
+        roleLabel.textContent = person.role === 'Best Man' ? 'Best Man Invite' : 'Groomsman Invite';
+        introTitle.textContent = `Welcome, ${guestName}`;
+        introBody.innerHTML = `This is your <strong>${person.role} Qualification Test</strong>.<br><br>Answer honestly. You get one attempt per question; the correct answer will show after.`;
+      } else {
+        roleLabel.textContent = 'Invalid Link';
+        introTitle.textContent = 'Oops!';
+        introBody.innerHTML = '<strong>This invite link is not configured.</strong><br><br>Please text me for the correct link.';
+        btnStart.disabled = true;
+        btnStart.textContent = 'Invalid Link';
+      }
     }
 
     btnStart.addEventListener('click', () => {
-      currentIndex = 0; score = 0; wrongCount = 0; attemptsPerQuestion.fill(0);
-      renderQuestion(); showCard(cardQuestion);
+      if (person && questions.length > 0) {
+        currentIndex = 0; score = 0; wrongCount = 0; attemptsPerQuestion.fill(0);
+        renderQuestion(); showCard(cardQuestion);
+      }
     });
 
     btnDone.addEventListener('click', finalizeAndClose);
