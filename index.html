@@ -354,10 +354,22 @@
       padding: 14px;
     }
   }
+
+  /* Confetti canvas */
+  #confettiCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+  }
 </style>
 
 </head>
 <body>
+  <canvas id="confettiCanvas"></canvas>
   <div class="app">
     <header>
       <div class="title-block">
@@ -496,6 +508,75 @@
       const params = new URLSearchParams(window.location.search);
       const value = params.get(key);
       return value ? decodeURIComponent(value) : defaultValue;
+    }
+
+    // Confetti effect - optimized for mobile
+    function launchConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      // Wedding color palette confetti
+      const colors = ['#3f5e42', '#6f8b73', '#e2d7c9', '#f2ede5', '#c0564a', '#7b8577'];
+      const confettiCount = 80; // Reduced for mobile performance
+      const confetti = [];
+
+      // Create confetti particles
+      for (let i = 0; i < confettiCount; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 4 + 2, // radius
+          d: Math.random() * confettiCount,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.floor(Math.random() * 10) - 10,
+          tiltAngleIncrement: Math.random() * 0.07 + 0.05,
+          tiltAngle: 0
+        });
+      }
+
+      let animationFrame;
+      let angle = 0;
+
+      function drawConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < confetti.length; i++) {
+          const c = confetti[i];
+          ctx.beginPath();
+          ctx.lineWidth = c.r / 2;
+          ctx.strokeStyle = c.color;
+          ctx.moveTo(c.x + c.tilt + c.r / 4, c.y);
+          ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 4);
+          ctx.stroke();
+        }
+
+        updateConfetti();
+        angle += 0.01;
+
+        // Stop after confetti falls off screen
+        if (confetti.every(c => c.y > canvas.height + 20)) {
+          cancelAnimationFrame(animationFrame);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        } else {
+          animationFrame = requestAnimationFrame(drawConfetti);
+        }
+      }
+
+      function updateConfetti() {
+        for (let i = 0; i < confetti.length; i++) {
+          const c = confetti[i];
+          c.tiltAngle += c.tiltAngleIncrement;
+          c.y += (Math.cos(angle + c.d) + 3 + c.r / 2) / 2;
+          c.x += Math.sin(angle);
+          c.tilt = Math.sin(c.tiltAngle - i / 3) * 15;
+        }
+      }
+
+      drawConfetti();
     }
 
     // ==================== Per-person configuration ====================
@@ -928,8 +1009,11 @@
         img.alt = `${guestName}'s photo`;
         cardFinal.querySelector('.card-body')?.appendChild(img) || cardFinal.appendChild(img);
       }
-      
+
       showCard(cardFinal);
+
+      // Launch confetti celebration!
+      setTimeout(() => launchConfetti(), 200);
     }
 
     // Attempt to close the tab/window when they click Done
@@ -980,6 +1064,15 @@
     });
 
     btnDone.addEventListener('click', finalizeAndClose);
+
+    // Handle canvas resize on orientation change (mobile)
+    window.addEventListener('resize', () => {
+      const canvas = document.getElementById('confettiCanvas');
+      if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+    });
 
     // kickoff
     initPersonalization(); updateHud();
