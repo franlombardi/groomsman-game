@@ -609,13 +609,13 @@
     const sharedWeddingQuestions = [
       {
         title: "¿Dónde fue mi primera cita con Ana?",
-        body: "Piensa bien. ¿Recuerdas dónde comenzó todo?",
+        body: "",
         options: ["Mini Golf, Budare Bistro y Cine", "Casino, ELEVEN y Panna Express", "Weston Town Center y Yogurtland"],
         correctIndex: 0
       },
       {
         title: "¿Cuándo y cómo le pedí a Ana que fuera mi novia?",
-        body: "Los detalles importan.",
+        body: "",
         options: [
           "9 de Julio de 2017 afuera de su casa con un Teddy Bear después de regresar de un catamaran",
           "14 de Febrero del 2018 en Waffle House después de regresar de una rumba en Space",
@@ -625,13 +625,13 @@
       },
       {
         title: "¿Cuándo le propuse matrimonio a Ana?",
-        body: "La fecha exacta.",
+        body: "",
         options: ["6 de Agosto, 2023", "12 de Septiembre, 2023", "7 de Agosto, 2023"],
         correctIndex: 0
       },
       {
         title: "¿Dónde le propuse matrimonio a Ana?",
-        body: "El lugar.",
+        body: "",
         options: ["En NYC", "En Chacaito", "En San Francisco"],
         correctIndex: 0
       }
@@ -640,19 +640,19 @@
     const sharedPersonalQuestions = [
       {
         title: "¿Soy fiel fan de cuál equipo de fútbol?",
-        body: "Deberías saber esto.",
+        body: "",
         options: ["AC Milan", "Real Madrid", "Deportivo Tachira"],
         correctIndex: 0
       },
       {
         title: "¿Cuál es mi comida favorita?",
-        body: "Piensa en lo que siempre pido.",
+        body: "",
         options: ["Pasta con salsa roja", "Caraotas con mayonesa", "Sushi"],
         correctIndex: 0
       },
       {
         title: "Si vamos a un bar, ¿qué NO me vas a ver tomando?",
-        body: "Conoces mis gustos.",
+        body: "",
         options: ["Cerveza", "Aperol Spritz", "Anis"],
         correctIndex: 0
       }
@@ -662,37 +662,37 @@
     const howWeMetQuestions = {
       diego: {
         title: "¿Cómo nos conocimos?",
-        body: "Nuestra historia.",
+        body: "",
         options: ["En clase de algebra del panita Kline", "En un dayger", "En una lanchita en los Roques"],
         correctIndex: 0
       },
       marco: {
         title: "¿Cómo nos conocimos?",
-        body: "Nuestra historia.",
+        body: "",
         options: ["Haciendo la fila para buscar los libros antes de empezar Sophomore year de high school", "En una competencia de natacion en el club italo", "En un open party en Savanna"],
         correctIndex: 0
       },
       gabriel: {
         title: "¿Cómo nos conocimos?",
-        body: "Nuestra historia.",
+        body: "",
         options: ["En Dave & Buster's", "En el carrito de perro caliente al frente del Tolon", "En un burdel comiendo carne molia"],
         correctIndex: 0
       },
       guillermo: {
         title: "¿Cómo nos conocimos?",
-        body: "Nuestra historia.",
+        body: "",
         options: ["En high school en una clase de Slutsky", "En la heladeria coldstone", "En un dayger random"],
         correctIndex: 0
       },
       daniel: {
         title: "¿Cómo nos conocimos?",
-        body: "Nuestra historia.",
+        body: "",
         options: ["Un dia random en Cypress durante lunch", "En los tryouts de Weston FC academy", "En un burdel por la calle 8"],
         correctIndex: 0
       },
       andres: {
         title: "¿Cómo nos conocimos?",
-        body: "Nuestra historia.",
+        body: "",
         options: ["En tu casa un dia random", "En una lanchita en los Roques", "En un burdel por la calle 8"],
         correctIndex: 0
       }
@@ -899,15 +899,15 @@
     // Show transition message between wedding questions and personal questions
     function showTransition() {
       questionTag.textContent = "Transición";
-      questionTitle.textContent = "Ahora, algunas sobre nosotros y sobre mí...";
-      questionBody.textContent = "Las siguientes preguntas son más personales.";
+      questionTitle.textContent = "Ahora, unas personales...";
+      questionBody.textContent = "";
       optionsContainer.innerHTML = '';
       questionHint.textContent = "";
 
-      // Auto-advance after 5 seconds
+      // Auto-advance after 3 seconds
       setTimeout(() => {
         renderQuestion();
-      }, 5000);
+      }, 3000);
     }
 
     // Show results with counts and present final role choice buttons
@@ -917,19 +917,22 @@
 
       let titleText, bodyText;
       if (score >= total - 1) {
-        titleText = 'Eres leyenda certificada';
-        bodyText = `${guestName}, lo hiciste perfecto con ${score}/${total}. Claramente eres material de primera línea.`;
+        titleText = 'Fenomeno';
+        bodyText = `${guestName}, lo hiciste increible con ${score}/${total}.`;
       } else if (score >= Math.floor(total / 2)) {
-        titleText = 'Pasaste, apenas';
+        titleText = 'Pasaste… de vaina';
         bodyText = `${guestName}, ${score}/${total}. Sólido, un poco sospechoso, pero aceptado.`;
       } else {
-        titleText = 'Muy sospechoso, pero aún estás dentro';
-        bodyText = `${guestName}, solo ${score}/${total}. Aún así elegido — esto es personal.`;
+        titleText = 'Uhmm raspaste…';
+        bodyText = `${guestName}, solo ${score}/${total}. Aún así elegido estas salvado.`;
       }
 
-      // summary includes wrong count
+      // summary includes wrong count + reveal
       resultTitle.textContent = titleText;
-      resultBody.textContent = bodyText + ` Tuviste ${wrongCount} intento(s) incorrecto(s).`;
+      const revealText = finalRole === 'Best Man'
+        ? '<br><br>Bueno, el punto de todo esto: quiero que seas mi Best Man.<br><br>Tienes dos opciones:'
+        : '<br><br>Bueno, el punto de todo esto: quiero que seas mi Groomsman.<br><br>Tienes dos opciones:';
+      resultBody.innerHTML = bodyText + revealText;
 
       // set up final choice buttons: both confirm the fixed role (derived from name)
       btnYes1.querySelector('span.label')?.remove?.();
@@ -954,10 +957,10 @@
       // Final card must clearly state the fixed role and use a short warm message
       if (role === 'Best Man') {
         finalTitle.textContent = 'Eres mi Best Man';
-        finalBody.textContent = `${guestName}, oficialmente eres mi Best Man. Toma captura de pantalla y mándame un mensaje para que podamos planificar el caos.`;
+        finalBody.innerHTML = `${guestName}, oficialmente eres mi Best Man.<br><br>Toma screenshot y mándamelo para saber que completaste esto.`;
       } else {
         finalTitle.textContent = 'Eres mi Groomsman';
-        finalBody.textContent = `${guestName}, oficialmente eres mi Groomsman. Toma captura de pantalla y mándame un mensaje para que podamos planificar el caos.`;
+        finalBody.innerHTML = `${guestName}, oficialmente eres mi Groomsman.<br><br>Toma screenshot y mándamelo para saber que completaste esto.`;
       }
       
       // Add the final photo if person config exists
@@ -1007,8 +1010,8 @@
     function initPersonalization() {
       if (person) {
         roleLabel.textContent = 'Boda 2026';
-        introTitle.textContent = `${person.nickname}, necesito tu ayuda con algo rápido antes de la boda.`;
-        introBody.innerHTML = `Estoy organizando los últimos detalles para la boda en Lisboa. Son solo un par de preguntas. Toma menos de 3 minutos.`;
+        introTitle.textContent = `${person.nickname}, tengo que confirmar algo antes de la boda.`;
+        introBody.innerHTML = `Responde estas preguntas.<br>(Toma menos de 2 minutos)<br><br>Gracias!`;
       } else {
         roleLabel.textContent = 'Enlace Inválido';
         introTitle.textContent = '¡Oops!';
