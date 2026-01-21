@@ -929,9 +929,10 @@
 
       // summary includes wrong count + reveal
       resultTitle.textContent = titleText;
+      const revealIntro = '<br><br>Quería confirmar que eras digno de nuestra amistad y confirmar si eras apto para lo que realmente necesito pedirte...';
       const revealText = finalRole === 'Best Man'
-        ? '<br><br>Bueno, el punto de todo esto: quiero que seas mi Best Man.<br><br>Tienes dos opciones:'
-        : '<br><br>Bueno, el punto de todo esto: quiero que seas mi Groomsman.<br><br>Tienes dos opciones:';
+        ? `${revealIntro}<br><br>Bueno, el punto de todo esto: quiero que seas mi Best Man.<br><br>Tienes dos opciones:`
+        : `${revealIntro}<br><br>Bueno, el punto de todo esto: quiero que seas mi Groomsman.<br><br>Tienes dos opciones:`;
       resultBody.innerHTML = bodyText + revealText;
 
       // set up final choice buttons: both confirm the fixed role (derived from name)
