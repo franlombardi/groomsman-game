@@ -373,12 +373,12 @@
   <div class="app">
     <header>
       <div class="title-block">
-        <span class="subtitle">Mini misión</span>
-        <h1>Misión Lisboa 2026</h1>
+        <span class="subtitle">Cuestionario de boda</span>
+        <h1>Lisboa, Sep 20th, 2026</h1>
       </div>
       <div class="badge">
-        <span class="icon">🤵‍♂️</span>
-        <span id="roleLabel">Wedding Squad</span>
+        <span class="icon">🇵🇹</span>
+        <span id="roleLabel">Verificación</span>
       </div>
     </header>
 
@@ -394,18 +394,16 @@
     </div>
 
     <div class="hint">
-      Todo lo que tienes que hacer es tocar la opción que te parezca más correcta. Sin ayuda, solo instinto.
+      Responde honestamente. Sin ayuda.
     </div>
 
     <!-- Intro card -->
     <div id="cardIntro" class="card active">
       <div>
-        <div class="card-header-tag">Briefing</div>
-        <div class="card-title" id="introTitle">Welcome, my friend</div>
+        <div class="card-header-tag">Verificación</div>
+        <div class="card-title" id="introTitle">Necesito tu ayuda con algo rápido</div>
         <div class="card-body" id="introBody">
-          This is your <strong>Best Man Qualification Test</strong>, also known as the Worst Man stress test.<br /><br />
-          You will get a few quick questions about our chaos and my life choices. There is no official pass mark,
-          but I will absolutely judge you silently.
+          Estoy organizando los últimos detalles para la boda en Lisboa. Son solo un par de preguntas. Toma menos de 3 minutos.
         </div>
       </div>
       <div>
@@ -490,7 +488,7 @@
     </div>
 
     <footer>
-      Designed as a one time invite for the <strong>wedding squad</strong>.
+      Lisboa <strong>09.20.2026</strong>
     </footer>
   </div>
 
@@ -508,6 +506,28 @@
       const params = new URLSearchParams(window.location.search);
       const value = params.get(key);
       return value ? decodeURIComponent(value) : defaultValue;
+    }
+
+    // Utility: shuffle array and return new array with shuffled order
+    function shuffleArray(array) {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    // Shuffle options for a question and return new question with shuffled options
+    function shuffleQuestionOptions(question) {
+      const correctAnswer = question.options[question.correctIndex];
+      const shuffledOptions = shuffleArray(question.options);
+      const newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
+      return {
+        ...question,
+        options: shuffledOptions,
+        correctIndex: newCorrectIndex
+      };
     }
 
     // Confetti effect - optimized for mobile
@@ -580,235 +600,158 @@
     }
 
     // ==================== Per-person configuration ====================
-    // Each person config: name, role, finalImage path, and their 5 questions.
+    // Each person config: name, role, finalImage path, and their 8 questions.
+    // Q1-Q4: Wedding/relationship questions (same for all)
+    // Q5: How we met (personalized)
+    // Q6-Q8: Personal questions (same for all)
+
+    // Shared questions for all people
+    const sharedWeddingQuestions = [
+      {
+        title: "¿Dónde fue mi primera cita con Ana?",
+        body: "Piensa bien. ¿Recuerdas dónde comenzó todo?",
+        options: ["Mini Golf, Budare Bistro y Cine", "Casino, ELEVEN y Panna Express", "Weston Town Center y Yogurtland"],
+        correctIndex: 0
+      },
+      {
+        title: "¿Cuándo y cómo le pedí a Ana que fuera mi novia?",
+        body: "Los detalles importan.",
+        options: [
+          "9 de Julio de 2017 afuera de su casa con un Teddy Bear después de regresar de un catamaran",
+          "14 de Febrero del 2018 en Waffle House después de regresar de una rumba en Space",
+          "7 de Septiembre de 2017 en las Bahamas mientras disfrutábamos de un Mojito"
+        ],
+        correctIndex: 0
+      },
+      {
+        title: "¿Cuándo le propuse matrimonio a Ana?",
+        body: "La fecha exacta.",
+        options: ["6 de Agosto, 2023", "12 de Septiembre, 2023", "7 de Agosto, 2023"],
+        correctIndex: 0
+      },
+      {
+        title: "¿Dónde le propuse matrimonio a Ana?",
+        body: "El lugar.",
+        options: ["En NYC", "En Chacaito", "En San Francisco"],
+        correctIndex: 0
+      }
+    ];
+
+    const sharedPersonalQuestions = [
+      {
+        title: "¿Soy fiel fan de cuál equipo de fútbol?",
+        body: "Deberías saber esto.",
+        options: ["AC Milan", "Real Madrid", "Deportivo Tachira"],
+        correctIndex: 0
+      },
+      {
+        title: "¿Cuál es mi comida favorita?",
+        body: "Piensa en lo que siempre pido.",
+        options: ["Pasta con salsa roja", "Caraotas con mayonesa", "Sushi"],
+        correctIndex: 0
+      },
+      {
+        title: "Si vamos a un bar, ¿qué NO me vas a ver tomando?",
+        body: "Conoces mis gustos.",
+        options: ["Cerveza", "Aperol Spritz", "Anis"],
+        correctIndex: 0
+      }
+    ];
+
+    // Personalized "how we met" questions
+    const howWeMetQuestions = {
+      diego: {
+        title: "¿Cómo nos conocimos?",
+        body: "Nuestra historia.",
+        options: ["En clase de algebra del panita Kline", "En un dayger", "En una lanchita en los Roques"],
+        correctIndex: 0
+      },
+      marco: {
+        title: "¿Cómo nos conocimos?",
+        body: "Nuestra historia.",
+        options: ["Haciendo la fila para buscar los libros antes de empezar Sophomore year de high school", "En una competencia de natacion en el club italo", "En un open party en Savanna"],
+        correctIndex: 0
+      },
+      gabriel: {
+        title: "¿Cómo nos conocimos?",
+        body: "Nuestra historia.",
+        options: ["En Dave & Buster's", "En el carrito de perro caliente al frente del Tolon", "En un burdel comiendo carne molia"],
+        correctIndex: 0
+      },
+      guillermo: {
+        title: "¿Cómo nos conocimos?",
+        body: "Nuestra historia.",
+        options: ["En high school en una clase de Slutsky", "En la heladeria coldstone", "En un dayger random"],
+        correctIndex: 0
+      },
+      daniel: {
+        title: "¿Cómo nos conocimos?",
+        body: "Nuestra historia.",
+        options: ["Un dia random en Cypress durante lunch", "En los tryouts de Weston FC academy", "En un burdel por la calle 8"],
+        correctIndex: 0
+      },
+      andres: {
+        title: "¿Cómo nos conocimos?",
+        body: "Nuestra historia.",
+        options: ["En tu casa un dia random", "En una lanchita en los Roques", "En un burdel por la calle 8"],
+        correctIndex: 0
+      }
+    };
+
+    // Build full questions array for each person (with shuffled options)
+    function buildQuestionsForPerson(personId) {
+      const howWeMet = howWeMetQuestions[personId];
+      const allQuestions = [
+        ...sharedWeddingQuestions,  // Q1-Q4
+        howWeMet,                    // Q5 (personalized)
+        ...sharedPersonalQuestions   // Q6-Q8
+      ];
+      // Shuffle options for each question
+      return allQuestions.map(q => shuffleQuestionOptions(q));
+    }
+
     const peopleConfig = {
       diego: {
         fullName: "Diego Sabal",
-        nickname: "Dieguishhh",
+        nickname: "Dieguish",
         role: "Best Man",
         finalImage: "images/diego-final.jpg",
-        questions: [
-          {
-            title: "How do we usually start a night out?",
-            body: "The ritual.",
-            options: ["With a plan", "With snacks", "No plan, chaos"],
-            correctIndex: 2
-          },
-          {
-            title: "Which song will get us singing?",
-            body: "You should know this one.",
-            options: ["A classic", "Something sad", "A meme song"],
-            correctIndex: 0
-          },
-          {
-            title: "My worst cooking disaster",
-            body: "Don't be gentle.",
-            options: ["Burnt pasta", "Fire alarm incident", "Salt overload"],
-            correctIndex: 1
-          },
-          {
-            title: "Who brings the energy?",
-            body: "Honestly.",
-            options: ["You", "Me", "The DJ"],
-            correctIndex: 0
-          },
-          {
-            title: "On the wedding, what's essential?",
-            body: "Practical essentials only.",
-            options: ["A speech", "A plan", "Snacks"],
-            correctIndex: 1
-          }
-        ]
+        questions: buildQuestionsForPerson('diego')
       },
       marco: {
         fullName: "Marco Guarente",
-        nickname: "Marcookie",
+        nickname: "MarCookie",
         role: "Best Man",
         finalImage: "images/marco-final.jpg",
-        questions: [
-          {
-            title: "Where did we first embarrass ourselves together?",
-            body: "The true origin story.",
-            options: ["At a party", "In class", "On a terrible road trip"],
-            correctIndex: 2
-          },
-          {
-            title: "My go-to late night snack",
-            body: "Two words.",
-            options: ["Cold pizza", "Sardines", "Ice cream"],
-            correctIndex: 0
-          },
-          {
-            title: "Who forgets things more often?",
-            body: "You know the answer.",
-            options: ["Me", "You", "Depends on the day"],
-            correctIndex: 1
-          },
-          {
-            title: "Pre-wedding drink of choice",
-            body: "Set the vibe.",
-            options: ["Whiskey neat", "Gin & tonic", "A beer"],
-            correctIndex: 0
-          },
-          {
-            title: "On the wedding day, punctuality is",
-            body: "Pick the right attitude.",
-            options: ["Mandatory", "Flexible", "An admirable suggestion"],
-            correctIndex: 0
-          }
-        ]
+        questions: buildQuestionsForPerson('marco')
       },
       gabriel: {
         fullName: "Gabriel Sosa",
-        nickname: "Gaibiri",
+        nickname: "Gabiri",
         role: "Groomsman",
         finalImage: "images/gabriel-final.jpg",
-        questions: [
-          {
-            title: "How did we first meet?",
-            body: "The origin story.",
-            options: ["At a party", "Through a friend", "At work"],
-            correctIndex: 1
-          },
-          {
-            title: "My first go-to drink",
-            body: "Know me well.",
-            options: ["Beer", "Whiskey", "Wine"],
-            correctIndex: 0
-          },
-          {
-            title: "Who is more spontaneous?",
-            body: "Honesty.",
-            options: ["You", "Me", "It depends"],
-            correctIndex: 0
-          },
-          {
-            title: "Perfect night out looks like",
-            body: "What's our style?",
-            options: ["Dinner and drinks", "Chaos and laughs", "Low key hangout"],
-            correctIndex: 1
-          },
-          {
-            title: "Wedding day energy",
-            body: "Set the tone.",
-            options: ["Calm and cool", "Hyped up", "Just go with it"],
-            correctIndex: 2
-          }
-        ]
+        questions: buildQuestionsForPerson('gabriel')
       },
       guillermo: {
         fullName: "Guillermo Stalhuth",
-        nickname: "Guille",
+        nickname: "Guillo",
         role: "Groomsman",
         finalImage: "images/guillermo-final.jpg",
-        questions: [
-          {
-            title: "How would you describe our friendship?",
-            body: "Real answer.",
-            options: ["Just met", "Old friends", "Brothers"],
-            correctIndex: 2
-          },
-          {
-            title: "My favorite weekend activity",
-            body: "Think about it.",
-            options: ["Sports", "Hiking", "Hanging with friends"],
-            correctIndex: 2
-          },
-          {
-            title: "When I'm stressed, I",
-            body: "Real talk.",
-            options: ["Talk it out", "Work it out physically", "Take time alone"],
-            correctIndex: 1
-          },
-          {
-            title: "Best advice you'd give me",
-            body: "No pressure.",
-            options: ["Work hard", "Live in the moment", "Stay humble"],
-            correctIndex: 2
-          },
-          {
-            title: "What role are you perfect for?",
-            body: "Final check.",
-            options: ["Best man", "Groomsman", "Both equally"],
-            correctIndex: 1
-          }
-        ]
+        questions: buildQuestionsForPerson('guillermo')
       },
       andres: {
         fullName: "Andres Sabal",
         nickname: "Andres",
         role: "Groomsman",
         finalImage: "images/andres-final.jpg",
-        questions: [
-          {
-            title: "Our shared memories are mostly",
-            body: "Think back.",
-            options: ["Fun and crazy", "Thoughtful and deep", "Both"],
-            correctIndex: 0
-          },
-          {
-            title: "You'd describe me as",
-            body: "Be honest.",
-            options: ["The planner", "The wild one", "The listener"],
-            correctIndex: 1
-          },
-          {
-            title: "Best time we've had together",
-            body: "Favorite moment.",
-            options: ["On a trip", "Just hanging out", "At a big event"],
-            correctIndex: 0
-          },
-          {
-            title: "What I value most in friends",
-            body: "Core value.",
-            options: ["Loyalty", "Fun", "Honesty"],
-            correctIndex: 0
-          },
-          {
-            title: "Why should you be my groomsman?",
-            body: "Final answer.",
-            options: ["You know me best", "You'll have fun", "You're reliable"],
-            correctIndex: 2
-          }
-        ]
+        questions: buildQuestionsForPerson('andres')
       },
       daniel: {
         fullName: "Daniel Najul",
-        nickname: "Daaaaaani",
+        nickname: "Najulzin",
         role: "Groomsman",
         finalImage: "images/daniel-final.jpg",
-        questions: [
-          {
-            title: "How long have we known each other?",
-            body: "Time check.",
-            options: ["A few years", "Many years", "Since childhood"],
-            correctIndex: 1
-          },
-          {
-            title: "My personality in one word",
-            body: "Quick assessment.",
-            options: ["Energetic", "Chill", "Thoughtful"],
-            correctIndex: 2
-          },
-          {
-            title: "Best way to celebrate is",
-            body: "My style.",
-            options: ["Big party", "Intimate dinner", "Adventure"],
-            correctIndex: 0
-          },
-          {
-            title: "What keeps our friendship strong",
-            body: "Real foundation.",
-            options: ["Common interests", "Genuine care", "Fun times"],
-            correctIndex: 1
-          },
-          {
-            title: "You're excited to be my groomsman because",
-            body: "Final thought.",
-            options: ["It's an honor", "It'll be fun", "Both"],
-            correctIndex: 2
-          }
-        ]
+        questions: buildQuestionsForPerson('daniel')
       }
     };
 
@@ -902,8 +845,8 @@
       });
 
       questionHint.textContent = (currentIndex === questions.length - 1)
-        ? 'La última. Responde con cuidado (tienes un intento).' 
-        : 'Responde honestamente. Tienes un intento por pregunta; la respuesta correcta aparecerá después.';
+        ? 'Última pregunta.'
+        : 'Tienes un intento por pregunta.';
 
       updateHud();
     }
@@ -941,11 +884,30 @@
       setTimeout(() => {
         if (currentIndex + 1 < questions.length) {
           currentIndex += 1;
-          renderQuestion();
+          // Show transition message after Q4 (index 3) before Q5 (index 4)
+          if (currentIndex === 4) {
+            showTransition();
+          } else {
+            renderQuestion();
+          }
         } else {
           showResult();
         }
       }, 1400);
+    }
+
+    // Show transition message between wedding questions and personal questions
+    function showTransition() {
+      questionTag.textContent = "Transición";
+      questionTitle.textContent = "Ahora, algunas sobre nosotros y sobre mí...";
+      questionBody.textContent = "Las siguientes preguntas son más personales.";
+      optionsContainer.innerHTML = '';
+      questionHint.textContent = "";
+
+      // Auto-advance after 5 seconds
+      setTimeout(() => {
+        renderQuestion();
+      }, 5000);
     }
 
     // Show results with counts and present final role choice buttons
@@ -1044,9 +1006,9 @@
     // Initialization and bindings
     function initPersonalization() {
       if (person) {
-        roleLabel.textContent = person.role === 'Best Man' ? 'Boda 2026' : 'Boda 2026';
-        introTitle.textContent = `${person.nickname}, necesito que pases esta mini misión.`;
-        introBody.innerHTML = `Esto es una mini misión para la boda en Lisboa, el 20 de septiembre de 2026.<br><br>Son pocas preguntas rápidas sobre nosotros y sobre cómo ves todo este desastre organizado. No hay nota mínima oficial, pero sí voy a estar pendiente de tus respuestas.`;
+        roleLabel.textContent = 'Boda 2026';
+        introTitle.textContent = `${person.nickname}, necesito tu ayuda con algo rápido antes de la boda.`;
+        introBody.innerHTML = `Estoy organizando los últimos detalles para la boda en Lisboa. Son solo un par de preguntas. Toma menos de 3 minutos.`;
       } else {
         roleLabel.textContent = 'Enlace Inválido';
         introTitle.textContent = '¡Oops!';
