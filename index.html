@@ -278,7 +278,8 @@
   const CONFIG = {
     transitionDelay: 3000,
     answerFeedbackDelay: 1400,
-    confettiCount: 80,
+    confettiCount: 150,
+    confettiDuration: 8000,
     colors: ['#3f5e42', '#6f8b73', '#e2d7c9', '#f2ede5', '#c0564a', '#7b8577']
   };
 
@@ -522,21 +523,24 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const confetti = Array.from({ length: CONFIG.confettiCount }, () => ({
+    const createParticle = () => ({
       x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height - canvas.height,
-      r: Math.random() * 4 + 2,
+      y: Math.random() * -canvas.height,
+      r: Math.random() * 5 + 3,
       d: Math.random() * CONFIG.confettiCount,
       color: CONFIG.colors[Math.floor(Math.random() * CONFIG.colors.length)],
       tilt: Math.floor(Math.random() * 10) - 10,
       tiltAngleIncrement: Math.random() * 0.07 + 0.05,
       tiltAngle: 0
-    }));
+    });
 
+    const confetti = Array.from({ length: CONFIG.confettiCount }, createParticle);
+    const startTime = Date.now();
     let angle = 0;
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const elapsed = Date.now() - startTime;
 
       confetti.forEach(c => {
         ctx.beginPath();
@@ -550,11 +554,18 @@
         c.y += (Math.cos(angle + c.d) + 3 + c.r / 2) / 2;
         c.x += Math.sin(angle);
         c.tilt = Math.sin(c.tiltAngle) * 15;
+
+        // Respawn confetti at top if still within duration
+        if (c.y > canvas.height + 20 && elapsed < CONFIG.confettiDuration) {
+          c.x = Math.random() * canvas.width;
+          c.y = -20;
+        }
       });
 
       angle += 0.01;
 
-      if (!confetti.every(c => c.y > canvas.height + 20)) {
+      // Continue until duration ends AND all confetti has fallen
+      if (elapsed < CONFIG.confettiDuration || !confetti.every(c => c.y > canvas.height + 20)) {
         requestAnimationFrame(draw);
       } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
