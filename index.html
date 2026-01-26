@@ -1,372 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Misión Lisboa 2026</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<style>
-  :root {
-    /* Light wedding palette */
-    --bg-page: #3f5e42;         /* page background, light cream */
-    --card-bg: #ffffff;         /* main card background */
-    --card-border: #e2d7c9;     /* soft beige border */
-
-    --text-main: #2f3b32;       /* main dark text */
-    --text-muted: #7b8577;      /* soft muted text */
-
-    --accent: #3f5e42;          /* deep olive, like RSVP button */
-    --accent-soft: #6f8b73;     /* softer olive */
-    --danger: #c0564a;
-    --good: #3f5e42;
-
-    --radius-xl: 20px;
-    --radius-lg: 10px;
-    --shadow-soft: 0 14px 30px rgba(15, 23, 42, 0.08);
-  }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  body {
-    min-height: 100vh;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: var(--bg-page);
-    color: var(--text-main);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-  }
-
-  .app {
-    width: 100%;
-    max-width: 430px;
-    background: var(--card-bg);
-    border-radius: 24px;
-    border: 1px solid var(--card-border);
-    box-shadow: var(--shadow-soft);
-    padding: 18px 18px 20px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .app::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(circle at top left, rgba(255, 255, 255, 0.65), transparent 55%),
-      radial-gradient(circle at bottom right, rgba(222, 209, 193, 0.7), transparent 60%);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-
-  .title-block {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .subtitle {
-    font-size: 0.68rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent-soft);
-  }
-
-  h1 {
-    font-family: "Georgia", "Times New Roman", serif;
-    font-size: 1.3rem;
-    letter-spacing: 0.04em;
-    font-weight: 600;
-    color: var(--text-main);
-  }
-
-  .badge {
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: rgba(242, 237, 229, 0.9);
-    border: 1px solid var(--card-border);
-    font-size: 0.7rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--text-muted);
-  }
-
-  .badge span.icon {
-    font-size: 1rem;
-  }
-
-  .hud {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 0.7rem;
-    color: var(--text-muted);
-  }
-
-  .hud-pill {
-    padding: 3px 10px;
-    border-radius: 999px;
-    background: #f4ece3;
-    border: 1px solid var(--card-border);
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .hud-pill span.value {
-    font-weight: 600;
-    color: var(--accent-soft);
-  }
-
-  .hud-pill.good span.value {
-    color: var(--good);
-  }
-
-  .hud-pill.bad span.value {
-    color: var(--danger);
-  }
-
-  .hint {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-  }
-
-  .card {
-    border-radius: var(--radius-xl);
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    padding: 16px 16px 14px;
-    min-height: 260px;
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .card.active {
-    display: flex;
-  }
-
-  .card-header-tag {
-    font-size: 0.68rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent-soft);
-    margin-bottom: 6px;
-  }
-
-  .card-title {
-    font-size: 1.05rem;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: var(--text-main);
-  }
-
-  .card-body {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-
-  .card-body strong {
-    color: var(--accent-soft);
-    font-weight: 600;
-  }
-
-  .options {
-    margin-top: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .option-btn {
-    width: 100%;
-    padding: 11px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--card-border);
-    background: #f6f0e8;
-    color: var(--text-main);
-    font-size: 0.8rem;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    cursor: pointer;
-    box-shadow: 0 6px 12px rgba(15, 23, 42, 0.05);
-    transition:
-      transform 0.06s ease,
-      box-shadow 0.06s ease,
-      border-color 0.06s ease,
-      background 0.06s ease;
-  }
-
-  .option-btn span.label {
-    flex: 1;
-  }
-
-  .option-btn span.key {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-  }
-
-  .option-btn:active {
-    transform: translateY(1px);
-    box-shadow: 0 4px 8px rgba(15, 23, 42, 0.08);
-    border-color: var(--accent-soft);
-  }
-
-  /* visual feedback for answers */
-  .option-btn.correct {
-    border-color: var(--good);
-    background: #e4f0e6;
-    box-shadow: 0 6px 14px rgba(63, 94, 66, 0.12);
-  }
-
-  .option-btn.wrong {
-    border-color: var(--danger);
-    background: #fce9e7;
-    opacity: 0.98;
-  }
-
-  .btn-row {
-    margin-top: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .btn {
-    border: none;
-    border-radius: 6px;
-    padding: 11px 10px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    box-shadow: 0 8px 16px rgba(63, 94, 66, 0.25);
-    transition: transform 0.06s ease, box-shadow 0.06s ease, background 0.06s ease;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: #f7f4ee;
-  }
-
-  .btn-primary:active {
-    transform: translateY(1px);
-    box-shadow: 0 4px 10px rgba(63, 94, 66, 0.35);
-  }
-
-  .btn-secondary {
-    background: transparent;
-    color: var(--accent);
-    border: 1px solid var(--accent);
-    box-shadow: none;
-  }
-
-  .btn-secondary:active {
-    transform: translateY(1px);
-    box-shadow: 0 3px 8px rgba(63, 94, 66, 0.25);
-  }
-
-  .btn span.icon {
-    font-size: 1rem;
-  }
-
-  .small-text {
-    margin-top: 6px;
-    font-size: 0.68rem;
-    color: var(--text-muted);
-  }
-
-  .small-text strong {
-    color: var(--accent-soft);
-  }
-
-  .score-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 8px;
-    border-radius: 999px;
-    background: #f4ece3;
-    border: 1px solid var(--card-border);
-    font-size: 0.68rem;
-    color: var(--text-muted);
-  }
-
-  .score-pill span.value {
-    color: var(--good);
-    font-weight: 600;
-  }
-
-  footer {
-    margin-top: 8px;
-    text-align: center;
-    font-size: 0.64rem;
-    color: var(--text-muted);
-  }
-
-  footer strong {
-    color: var(--accent-soft);
-  }
-
-  .final-photo {
-    width: 100%;
-    max-width: 280px;
-    margin: 16px auto 0;
-    border-radius: 12px;
-    display: block;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
-  }
-
-  @media (max-width: 380px) {
-    .app {
-      border-radius: 20px;
-      padding: 14px;
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg-page: #3f5e42;
+      --card-bg: #ffffff;
+      --card-border: #e2d7c9;
+      --text-main: #2f3b32;
+      --text-muted: #7b8577;
+      --accent: #3f5e42;
+      --accent-soft: #6f8b73;
+      --danger: #c0564a;
+      --good: #3f5e42;
+      --radius-xl: 20px;
+      --radius-lg: 10px;
+      --shadow-soft: 0 14px 30px rgba(15, 23, 42, 0.08);
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      background: var(--card-bg);
+      border-radius: 24px;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 18px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.65), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(222, 209, 193, 0.7), transparent 60%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .title-block { display: flex; flex-direction: column; gap: 4px; }
+    .subtitle { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-soft); }
+    h1 { font-family: Georgia, "Times New Roman", serif; font-size: 1.3rem; letter-spacing: 0.04em; font-weight: 600; }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(242, 237, 229, 0.9);
+      border: 1px solid var(--card-border);
+      font-size: 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+    .badge .icon { font-size: 1rem; }
+
+    .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.7rem; color: var(--text-muted); }
+    .hud-pill {
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: #f4ece3;
+      border: 1px solid var(--card-border);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hud-pill .value { font-weight: 600; color: var(--accent-soft); }
+    .hud-pill.good .value { color: var(--good); }
+
+    .hint { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; }
 
     .card {
-      border-radius: 16px;
-      padding: 14px;
+      border-radius: var(--radius-xl);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px 16px 14px;
+      min-height: 260px;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
     }
-  }
+    .card.active { display: flex; }
 
-  /* Confetti canvas */
-  #confettiCanvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-  }
-</style>
+    .card-header-tag { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-soft); margin-bottom: 6px; }
+    .card-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; }
+    .card-body { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+    .card-body strong { color: var(--accent-soft); font-weight: 600; }
 
+    .options { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+
+    .option-btn {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      background: #f6f0e8;
+      color: var(--text-main);
+      font-size: 0.8rem;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(15, 23, 42, 0.05);
+      transition: transform 0.06s ease, box-shadow 0.06s ease, border-color 0.06s ease, background 0.06s ease;
+    }
+    .option-btn .label { flex: 1; }
+    .option-btn .key { font-size: 0.7rem; color: var(--text-muted); }
+    .option-btn:active { transform: translateY(1px); box-shadow: 0 4px 8px rgba(15, 23, 42, 0.08); border-color: var(--accent-soft); }
+    .option-btn.correct { border-color: var(--good); background: #e4f0e6; box-shadow: 0 6px 14px rgba(63, 94, 66, 0.12); }
+    .option-btn.wrong { border-color: var(--danger); background: #fce9e7; opacity: 0.98; }
+
+    .btn-row { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+
+    .btn {
+      border: none;
+      border-radius: 6px;
+      padding: 11px 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 16px rgba(63, 94, 66, 0.25);
+      transition: transform 0.06s ease, box-shadow 0.06s ease, background 0.06s ease;
+    }
+    .btn-primary { background: var(--accent); color: #f7f4ee; }
+    .btn-primary:active { transform: translateY(1px); box-shadow: 0 4px 10px rgba(63, 94, 66, 0.35); }
+    .btn-secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); box-shadow: none; }
+    .btn-secondary:active { transform: translateY(1px); box-shadow: 0 3px 8px rgba(63, 94, 66, 0.25); }
+    .btn .icon { font-size: 1rem; }
+
+    .small-text { margin-top: 6px; font-size: 0.68rem; color: var(--text-muted); }
+    .small-text strong { color: var(--accent-soft); }
+
+    .score-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #f4ece3;
+      border: 1px solid var(--card-border);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+    .score-pill .value { color: var(--good); font-weight: 600; }
+
+    footer { margin-top: 8px; text-align: center; font-size: 0.64rem; color: var(--text-muted); }
+    footer strong { color: var(--accent-soft); }
+
+    .final-photo {
+      width: 100%;
+      max-width: 280px;
+      margin: 16px auto 0;
+      border-radius: 12px;
+      display: block;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    @media (max-width: 380px) {
+      .app { border-radius: 20px; padding: 14px; }
+      .card { border-radius: 16px; padding: 14px; }
+    }
+
+    #confettiCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+  </style>
 </head>
 <body>
   <canvas id="confettiCanvas"></canvas>
@@ -383,665 +206,394 @@
     </header>
 
     <div class="hud">
-      <div class="hud-pill">
-        <span>Question</span>
-        <span class="value" id="hudQuestion">0 / 0</span>
-      </div>
-      <div class="hud-pill good">
-        <span>Score</span>
-        <span class="value" id="hudScore">0</span>
-      </div>
+      <div class="hud-pill"><span>Question</span><span class="value" id="hudQuestion">0 / 0</span></div>
+      <div class="hud-pill good"><span>Score</span><span class="value" id="hudScore">0</span></div>
     </div>
 
-    <div class="hint">
-      Responde honestamente. Sin ayuda.
-    </div>
+    <div class="hint">Responde honestamente. Sin ayuda.</div>
 
-    <!-- Intro card -->
     <div id="cardIntro" class="card active">
       <div>
         <div class="card-header-tag">Verificación</div>
-        <div class="card-title" id="introTitle">Necesito tu ayuda con algo rápido</div>
-        <div class="card-body" id="introBody">
-          Estoy organizando los últimos detalles para la boda en Lisboa. Son solo un par de preguntas. Toma menos de 3 minutos.
-        </div>
+        <div class="card-title" id="introTitle"></div>
+        <div class="card-body" id="introBody"></div>
       </div>
       <div>
         <div class="btn-row">
-          <button id="btnStart" class="btn btn-primary">
-            <span class="icon">▶️</span>
-            <span>Comenzar</span>
-          </button>
+          <button id="btnStart" class="btn btn-primary"><span class="icon">▶️</span><span>Comenzar</span></button>
         </div>
-        <div class="small-text">
-          Hazle screenshot al resultado cuando termines.
-        </div>
+        <div class="small-text">Hazle screenshot al resultado cuando termines.</div>
       </div>
     </div>
 
-    <!-- Question card -->
     <div id="cardQuestion" class="card">
       <div>
-        <div class="card-header-tag" id="questionTag">Pregunta</div>
-        <div class="card-title" id="questionTitle">Pregunta</div>
-        <div class="card-body" id="questionBody">
-          Escoge la opción que te parezca más correcta. Solo hay una respuesta oficial, pero los vibes importan.
-        </div>
-        <div class="options" id="optionsContainer">
-          <!-- buttons inserted here by JS -->
-        </div>
+        <div class="card-header-tag" id="questionTag"></div>
+        <div class="card-title" id="questionTitle"></div>
+        <div class="card-body" id="questionBody"></div>
+        <div class="options" id="optionsContainer"></div>
       </div>
-      <div class="small-text" id="questionHint">
-        Consejo: responde basándote en lo que sabes de mí, no en lo que crees que es la respuesta educada.
-      </div>
+      <div class="small-text" id="questionHint"></div>
     </div>
 
-    <!-- Result card -->
     <div id="cardResult" class="card">
       <div>
         <div class="card-header-tag">Resultados</div>
-        <div class="card-title" id="resultTitle">Sobreviviste a la prueba</div>
-        <div class="card-body" id="resultBody">
-          Texto de resultado.
-        </div>
+        <div class="card-title" id="resultTitle"></div>
+        <div class="card-body" id="resultBody"></div>
       </div>
       <div>
         <div class="btn-row">
-          <button id="btnYes1" class="btn btn-primary">
-            <span class="icon">✅</span>
-            <span id="btnYes1Text">Yes, obviously</span>
-          </button>
-          <button id="btnYes2" class="btn btn-secondary">
-            <span class="icon">🔥</span>
-            <span id="btnYes2Text">I was born for this</span>
-          </button>
+          <button id="btnYes1" class="btn btn-primary"></button>
+          <button id="btnYes2" class="btn btn-secondary"></button>
         </div>
         <div class="small-text">
-          <span class="score-pill">
-            <span>Test score</span>
-            <span class="value" id="resultScoreText">0 / 0</span>
-          </span>
+          <span class="score-pill"><span>Test score</span><span class="value" id="resultScoreText">0 / 0</span></span>
         </div>
       </div>
     </div>
 
-    <!-- Final answer card -->
     <div id="cardFinal" class="card">
       <div>
         <div class="card-header-tag">Squad locked</div>
-        <div class="card-title" id="finalTitle">You are in</div>
-        <div class="card-body" id="finalBody">
-          Screenshot this if you want proof, then text me so we can plan the chaos properly.
-        </div>
+        <div class="card-title" id="finalTitle"></div>
+        <div class="card-body" id="finalBody"></div>
       </div>
       <div>
         <div class="btn-row">
-          <button id="btnDone" class="btn btn-primary">
-            <span class="icon">📲</span>
-            <span>Listo</span>
-          </button>
+          <button id="btnDone" class="btn btn-primary"><span class="icon">📲</span><span>Listo</span></button>
         </div>
-        <div class="small-text">
-          Puedes cerrar esta pestaña, pero la responsabilidad ahora es permanente.
-        </div>
+        <div class="small-text">Puedes cerrar esta pestaña, pero la responsabilidad ahora es permanente.</div>
       </div>
     </div>
 
-    <footer>
-      Lisboa <strong>09.20.2026</strong>
-    </footer>
+    <footer>Lisboa <strong>09.20.2026</strong></footer>
   </div>
 
-  <script>
-    /*
-      Structure: Single-file SPA with four cards (Intro, Question, Result, Final).
-      - Reads `id` from URL params and looks up the person's config.
-      - Each person has their own name, role, questions, and final image.
-      - Shows questions one at a time; single attempt per question with feedback.
-      - Tracks attempts and wrong counts, then shows the final card with the person's image.
-    */
+<script>
+(function() {
+  'use strict';
 
-    // Utility: read URL query parameter with default
-    function getQueryParam(key, defaultValue) {
-      const params = new URLSearchParams(window.location.search);
-      const value = params.get(key);
-      return value ? decodeURIComponent(value) : defaultValue;
+  // ===================== CONFIGURATION =====================
+  const CONFIG = {
+    transitionDelay: 3000,
+    answerFeedbackDelay: 1400,
+    confettiCount: 80,
+    colors: ['#3f5e42', '#6f8b73', '#e2d7c9', '#f2ede5', '#c0564a', '#7b8577']
+  };
+
+  const QUESTIONS = {
+    wedding: [
+      { title: "¿Dónde fue mi primera cita con Ana?", options: ["Mini Golf, Budare Bistro y Cine", "Casino, ELEVEN y Panna Express", "Weston Town Center y Yogurtland"], correctIndex: 0 },
+      { title: "¿Cuándo y cómo le pedí a Ana que fuera mi novia?", options: ["9 de Julio de 2017 afuera de su casa con un Teddy Bear después de regresar de un catamaran", "14 de Febrero del 2018 en Waffle House después de regresar de una rumba en Space", "7 de Septiembre de 2017 en las Bahamas mientras disfrutábamos de un Mojito"], correctIndex: 0 },
+      { title: "¿Cuándo le propuse matrimonio a Ana?", options: ["6 de Agosto, 2023", "12 de Septiembre, 2023", "7 de Agosto, 2023"], correctIndex: 0 },
+      { title: "¿Dónde le propuse matrimonio a Ana?", options: ["En NYC", "En Chacaito", "En San Francisco"], correctIndex: 0 }
+    ],
+    personal: [
+      { title: "¿Soy fiel fan de cuál equipo de fútbol?", options: ["AC Milan", "Real Madrid", "Deportivo Tachira"], correctIndex: 0 },
+      { title: "¿Cuál es mi comida favorita?", options: ["Pasta con salsa roja", "Caraotas con mayonesa", "Sushi"], correctIndex: 0 },
+      { title: "Si vamos a un bar, ¿qué NO me vas a ver tomando?", options: ["Cerveza", "Aperol Spritz", "Anis"], correctIndex: 0 }
+    ],
+    howWeMet: {
+      diego: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["En clase de algebra del panita Kline", "En un dayger", "En una lanchita en los Roques"], correctIndex: 0 },
+      marco: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["Haciendo la fila para buscar los libros antes de empezar Sophomore year de high school", "En una competencia de natacion en el club italo", "En un open party en Savanna"], correctIndex: 0 },
+      gabriel: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["En Dave & Buster's", "En el carrito de perro caliente al frente del Tolon", "En un burdel comiendo carne molia"], correctIndex: 0 },
+      guillermo: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["En high school en una clase de Slutsky", "En la heladeria coldstone", "En un dayger random"], correctIndex: 0 },
+      daniel: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["Un dia random en Cypress durante lunch", "En los tryouts de Weston FC academy", "En un burdel por la calle 8"], correctIndex: 0 },
+      andres: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["En tu casa un dia random", "En una lanchita en los Roques", "En un burdel por la calle 8"], correctIndex: 0 }
     }
+  };
 
-    // Utility: shuffle array and return new array with shuffled order
-    function shuffleArray(array) {
-      const shuffled = [...array];
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-      }
-      return shuffled;
+  const PEOPLE = {
+    diego: { fullName: "Diego Sabal", nickname: "Dieguish", role: "Best Man", finalImage: "images/Diego.jpeg" },
+    marco: { fullName: "Marco Guarente", nickname: "MarCookie", role: "Best Man", finalImage: "images/Marco.jpeg" },
+    gabriel: { fullName: "Gabriel Sosa", nickname: "Gabiri", role: "Groomsman", finalImage: "images/Gabriel.jpeg" },
+    guillermo: { fullName: "Guillermo Stalhuth", nickname: "Guillo", role: "Groomsman", finalImage: "images/Guillermo.jpeg" },
+    andres: { fullName: "Andres Sabal", nickname: "Andres", role: "Groomsman", finalImage: "images/Andres.jpeg" },
+    daniel: { fullName: "Daniel Najul", nickname: "Najulzin", role: "Groomsman", finalImage: "images/Daniel.jpeg" }
+  };
+
+  const RESULT_TIERS = [
+    { minScore: (total) => total - 1, title: 'Fenomeno', getMessage: (name, score, total) => `${name}, lo hiciste increible con ${score}/${total}.` },
+    { minScore: (total) => Math.floor(total / 2), title: 'Pasaste… de vaina', getMessage: (name, score, total) => `${name}, ${score}/${total}. Sólido, un poco sospechoso, pero aceptado.` },
+    { minScore: () => 0, title: 'Uhmm raspaste…', getMessage: (name, score, total) => `${name}, solo ${score}/${total}. Aún así elegido estas salvado.` }
+  ];
+
+  const ROLE_CONFIG = {
+    'Best Man': { icon: '👑', buttonText: 'Ser tu Best Man' },
+    'Groomsman': { icon: '🤝', buttonText: 'Ser tu Groomsman' }
+  };
+
+  // ===================== UTILITIES =====================
+  const $ = (id) => document.getElementById(id);
+  const getQueryParam = (key) => new URLSearchParams(window.location.search).get(key);
+
+  const shuffleArray = (arr) => {
+    const shuffled = [...arr];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
+    return shuffled;
+  };
 
-    // Shuffle options for a question and return new question with shuffled options
-    function shuffleQuestionOptions(question) {
-      const correctAnswer = question.options[question.correctIndex];
-      const shuffledOptions = shuffleArray(question.options);
-      const newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
-      return {
-        ...question,
-        options: shuffledOptions,
-        correctIndex: newCorrectIndex
-      };
-    }
+  const shuffleQuestionOptions = (q) => {
+    const correctAnswer = q.options[q.correctIndex];
+    const shuffledOptions = shuffleArray(q.options);
+    return { ...q, options: shuffledOptions, correctIndex: shuffledOptions.indexOf(correctAnswer) };
+  };
 
-    // Confetti effect - optimized for mobile
-    function launchConfetti() {
-      const canvas = document.getElementById('confettiCanvas');
-      if (!canvas) return;
+  const buildQuestionsForPerson = (personId) => {
+    const allQuestions = [...QUESTIONS.wedding, QUESTIONS.howWeMet[personId], ...QUESTIONS.personal];
+    return allQuestions.map(shuffleQuestionOptions);
+  };
 
-      const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+  const getResultTier = (score, total) => RESULT_TIERS.find(tier => score >= tier.minScore(total));
 
-      // Wedding color palette confetti
-      const colors = ['#3f5e42', '#6f8b73', '#e2d7c9', '#f2ede5', '#c0564a', '#7b8577'];
-      const confettiCount = 80; // Reduced for mobile performance
-      const confetti = [];
+  // ===================== DOM ELEMENTS =====================
+  const el = {
+    roleLabel: $('roleLabel'),
+    introTitle: $('introTitle'),
+    introBody: $('introBody'),
+    hudQuestion: $('hudQuestion'),
+    hudScore: $('hudScore'),
+    questionTag: $('questionTag'),
+    questionTitle: $('questionTitle'),
+    questionBody: $('questionBody'),
+    optionsContainer: $('optionsContainer'),
+    questionHint: $('questionHint'),
+    resultTitle: $('resultTitle'),
+    resultBody: $('resultBody'),
+    resultScoreText: $('resultScoreText'),
+    btnYes1: $('btnYes1'),
+    btnYes2: $('btnYes2'),
+    finalTitle: $('finalTitle'),
+    finalBody: $('finalBody'),
+    cardIntro: $('cardIntro'),
+    cardQuestion: $('cardQuestion'),
+    cardResult: $('cardResult'),
+    cardFinal: $('cardFinal'),
+    btnStart: $('btnStart'),
+    btnDone: $('btnDone')
+  };
 
-      // Create confetti particles
-      for (let i = 0; i < confettiCount; i++) {
-        confetti.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height - canvas.height,
-          r: Math.random() * 4 + 2, // radius
-          d: Math.random() * confettiCount,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          tilt: Math.floor(Math.random() * 10) - 10,
-          tiltAngleIncrement: Math.random() * 0.07 + 0.05,
-          tiltAngle: 0
-        });
-      }
+  const allCards = [el.cardIntro, el.cardQuestion, el.cardResult, el.cardFinal];
 
-      let animationFrame;
-      let angle = 0;
+  // ===================== STATE =====================
+  const personId = getQueryParam('id');
+  const person = PEOPLE[personId];
+  const questions = person ? buildQuestionsForPerson(personId) : [];
 
-      function drawConfetti() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const state = { currentIndex: 0, score: 0, hasFinalized: false };
 
-        for (let i = 0; i < confetti.length; i++) {
-          const c = confetti[i];
-          ctx.beginPath();
-          ctx.lineWidth = c.r / 2;
-          ctx.strokeStyle = c.color;
-          ctx.moveTo(c.x + c.tilt + c.r / 4, c.y);
-          ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 4);
-          ctx.stroke();
-        }
+  // ===================== UI FUNCTIONS =====================
+  const showCard = (card) => {
+    allCards.forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+  };
 
-        updateConfetti();
-        angle += 0.01;
+  const updateHud = () => {
+    el.hudQuestion.textContent = `${Math.min(state.currentIndex + 1, questions.length)} / ${questions.length}`;
+    el.hudScore.textContent = state.score;
+  };
 
-        // Stop after confetti falls off screen
-        if (confetti.every(c => c.y > canvas.height + 20)) {
-          cancelAnimationFrame(animationFrame);
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        } else {
-          animationFrame = requestAnimationFrame(drawConfetti);
-        }
-      }
+  const renderQuestion = () => {
+    const q = questions[state.currentIndex];
+    el.questionTag.textContent = `Pregunta ${state.currentIndex + 1}`;
+    el.questionTitle.textContent = q.title;
+    el.questionBody.textContent = '';
+    el.optionsContainer.innerHTML = '';
 
-      function updateConfetti() {
-        for (let i = 0; i < confetti.length; i++) {
-          const c = confetti[i];
-          c.tiltAngle += c.tiltAngleIncrement;
-          c.y += (Math.cos(angle + c.d) + 3 + c.r / 2) / 2;
-          c.x += Math.sin(angle);
-          c.tilt = Math.sin(c.tiltAngle - i / 3) * 15;
-        }
-      }
-
-      drawConfetti();
-    }
-
-    // ==================== Per-person configuration ====================
-    // Each person config: name, role, finalImage path, and their 8 questions.
-    // Q1-Q4: Wedding/relationship questions (same for all)
-    // Q5: How we met (personalized)
-    // Q6-Q8: Personal questions (same for all)
-
-    // Shared questions for all people
-    const sharedWeddingQuestions = [
-      {
-        title: "¿Dónde fue mi primera cita con Ana?",
-        body: "",
-        options: ["Mini Golf, Budare Bistro y Cine", "Casino, ELEVEN y Panna Express", "Weston Town Center y Yogurtland"],
-        correctIndex: 0
-      },
-      {
-        title: "¿Cuándo y cómo le pedí a Ana que fuera mi novia?",
-        body: "",
-        options: [
-          "9 de Julio de 2017 afuera de su casa con un Teddy Bear después de regresar de un catamaran",
-          "14 de Febrero del 2018 en Waffle House después de regresar de una rumba en Space",
-          "7 de Septiembre de 2017 en las Bahamas mientras disfrutábamos de un Mojito"
-        ],
-        correctIndex: 0
-      },
-      {
-        title: "¿Cuándo le propuse matrimonio a Ana?",
-        body: "",
-        options: ["6 de Agosto, 2023", "12 de Septiembre, 2023", "7 de Agosto, 2023"],
-        correctIndex: 0
-      },
-      {
-        title: "¿Dónde le propuse matrimonio a Ana?",
-        body: "",
-        options: ["En NYC", "En Chacaito", "En San Francisco"],
-        correctIndex: 0
-      }
-    ];
-
-    const sharedPersonalQuestions = [
-      {
-        title: "¿Soy fiel fan de cuál equipo de fútbol?",
-        body: "",
-        options: ["AC Milan", "Real Madrid", "Deportivo Tachira"],
-        correctIndex: 0
-      },
-      {
-        title: "¿Cuál es mi comida favorita?",
-        body: "",
-        options: ["Pasta con salsa roja", "Caraotas con mayonesa", "Sushi"],
-        correctIndex: 0
-      },
-      {
-        title: "Si vamos a un bar, ¿qué NO me vas a ver tomando?",
-        body: "",
-        options: ["Cerveza", "Aperol Spritz", "Anis"],
-        correctIndex: 0
-      }
-    ];
-
-    // Personalized "how we met" questions
-    const howWeMetQuestions = {
-      diego: {
-        title: "¿Cómo nos conocimos?",
-        body: "",
-        options: ["En clase de algebra del panita Kline", "En un dayger", "En una lanchita en los Roques"],
-        correctIndex: 0
-      },
-      marco: {
-        title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)",
-        body: "",
-        options: ["Haciendo la fila para buscar los libros antes de empezar Sophomore year de high school", "En una competencia de natacion en el club italo", "En un open party en Savanna"],
-        correctIndex: 0
-      },
-      gabriel: {
-        title: "¿Cómo nos conocimos?",
-        body: "",
-        options: ["En Dave & Buster's", "En el carrito de perro caliente al frente del Tolon", "En un burdel comiendo carne molia"],
-        correctIndex: 0
-      },
-      guillermo: {
-        title: "¿Cómo nos conocimos?",
-        body: "",
-        options: ["En high school en una clase de Slutsky", "En la heladeria coldstone", "En un dayger random"],
-        correctIndex: 0
-      },
-      daniel: {
-        title: "¿Cómo nos conocimos?",
-        body: "",
-        options: ["Un dia random en Cypress durante lunch", "En los tryouts de Weston FC academy", "En un burdel por la calle 8"],
-        correctIndex: 0
-      },
-      andres: {
-        title: "¿Cómo nos conocimos?",
-        body: "",
-        options: ["En tu casa un dia random", "En una lanchita en los Roques", "En un burdel por la calle 8"],
-        correctIndex: 0
-      }
-    };
-
-    // Build full questions array for each person (with shuffled options)
-    function buildQuestionsForPerson(personId) {
-      const howWeMet = howWeMetQuestions[personId];
-      const allQuestions = [
-        ...sharedWeddingQuestions,  // Q1-Q4
-        howWeMet,                    // Q5 (personalized)
-        ...sharedPersonalQuestions   // Q6-Q8
-      ];
-      // Shuffle options for each question
-      return allQuestions.map(q => shuffleQuestionOptions(q));
-    }
-
-    const peopleConfig = {
-      diego: {
-        fullName: "Diego Sabal",
-        nickname: "Dieguish",
-        role: "Best Man",
-        finalImage: "images/Diego.jpeg",
-        questions: buildQuestionsForPerson('diego')
-      },
-      marco: {
-        fullName: "Marco Guarente",
-        nickname: "MarCookie",
-        role: "Best Man",
-        finalImage: "images/Marco.jpeg",
-        questions: buildQuestionsForPerson('marco')
-      },
-      gabriel: {
-        fullName: "Gabriel Sosa",
-        nickname: "Gabiri",
-        role: "Groomsman",
-        finalImage: "images/Gabriel.jpeg",
-        questions: buildQuestionsForPerson('gabriel')
-      },
-      guillermo: {
-        fullName: "Guillermo Stalhuth",
-        nickname: "Guillo",
-        role: "Groomsman",
-        finalImage: "images/Guillermo.jpeg",
-        questions: buildQuestionsForPerson('guillermo')
-      },
-      andres: {
-        fullName: "Andres Sabal",
-        nickname: "Andres",
-        role: "Groomsman",
-        finalImage: "images/Andres.jpeg",
-        questions: buildQuestionsForPerson('andres')
-      },
-      daniel: {
-        fullName: "Daniel Najul",
-        nickname: "Najulzin",
-        role: "Groomsman",
-        finalImage: "images/Daniel.jpeg",
-        questions: buildQuestionsForPerson('daniel')
-      }
-    };
-
-    // Read person id from URL
-    const personId = getQueryParam("id", null);
-    let person = null;
-    
-    if (personId && peopleConfig[personId]) {
-      person = peopleConfig[personId];
-    }
-
-    // Personalization: derived from person config
-    const guestName = person ? person.fullName : "my friend";
-    const finalRole = person ? person.role : "Groomsman";
-    const isBestManParam = finalRole === "Best Man";
-
-    // DOM refs
-    const roleLabel = document.getElementById("roleLabel");
-    const introTitle = document.getElementById("introTitle");
-    const introBody = document.getElementById("introBody");
-    const hudQuestion = document.getElementById("hudQuestion");
-    const hudScore = document.getElementById("hudScore");
-    const questionTag = document.getElementById("questionTag");
-    const questionTitle = document.getElementById("questionTitle");
-    const questionBody = document.getElementById("questionBody");
-    const optionsContainer = document.getElementById("optionsContainer");
-    const questionHint = document.getElementById("questionHint");
-    const resultTitle = document.getElementById("resultTitle");
-    const resultBody = document.getElementById("resultBody");
-    const resultScoreText = document.getElementById("resultScoreText");
-    const btnYes1 = document.getElementById("btnYes1");
-    const btnYes2 = document.getElementById("btnYes2");
-    const finalTitle = document.getElementById("finalTitle");
-    const finalBody = document.getElementById("finalBody");
-
-    const cardIntro = document.getElementById("cardIntro");
-    const cardQuestion = document.getElementById("cardQuestion");
-    const cardResult = document.getElementById("cardResult");
-    const cardFinal = document.getElementById("cardFinal");
-
-    const btnStart = document.getElementById("btnStart");
-    const btnDone = document.getElementById("btnDone");
-
-    // Get questions from person config
-    const questions = person ? person.questions : [];
-
-    // State
-    let currentIndex = 0;
-    let score = 0;
-    let wrongCount = 0;
-    // ensure finalize action runs only once
-    let hasFinalized = false;
-    const attemptsPerQuestion = new Array(questions.length).fill(0);
-    let chosenRole = null; // Final role chosen by user
-
-    // Helpers to show/hide cards
-    function showCard(card) {
-      [cardIntro, cardQuestion, cardResult, cardFinal].forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-    }
-
-    function updateHud() {
-      hudQuestion.textContent = `${Math.min(currentIndex + 1, questions.length)} / ${questions.length}`;
-      hudScore.textContent = String(score);
-    }
-
-    // Render a question and wire up answer buttons
-    function renderQuestion() {
-      const q = questions[currentIndex];
-      questionTag.textContent = `Pregunta ${currentIndex + 1}`;
-      questionTitle.textContent = q.title;
-      questionBody.textContent = q.body;
-
-      optionsContainer.innerHTML = '';
-
-      q.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        btn.type = 'button';
-        const label = document.createElement('span');
-        label.className = 'label';
-        label.textContent = opt;
-        const key = document.createElement('span');
-        key.className = 'key';
-        key.textContent = String(idx + 1);
-        btn.appendChild(label);
-        btn.appendChild(key);
-
-        btn.addEventListener('click', () => handleAnswer(btn, idx));
-        optionsContainer.appendChild(btn);
-      });
-
-      questionHint.textContent = (currentIndex === questions.length - 1)
-        ? 'Última pregunta.'
-        : 'Tienes un intento por pregunta.';
-
-      updateHud();
-    }
-
-    // Handle an answer: single attempt per question. Show feedback (what they chose and correct answer), then advance.
-    function handleAnswer(buttonEl, selectedIdx) {
-      const q = questions[currentIndex];
-      if (buttonEl.disabled) return;
-
-      // disable all options to lock the choice
-      Array.from(optionsContainer.children).forEach(b => b.disabled = true);
-
-      attemptsPerQuestion[currentIndex] += 1;
-
-      const chosenText = q.options[selectedIdx];
-      const correctText = q.options[q.correctIndex];
-
-      if (selectedIdx === q.correctIndex) {
-        buttonEl.classList.add('correct');
-        score += 1;
-      } else {
-        buttonEl.classList.add('wrong');
-        wrongCount += 1;
-        // also highlight the correct one
-        const children = Array.from(optionsContainer.children);
-        const correctBtn = children[q.correctIndex];
-        if (correctBtn) correctBtn.classList.add('correct');
-      }
-
-      // show explicit feedback showing what they chose and the correct answer
-      questionHint.textContent = `Respondiste: "${chosenText}" — Correcto: "${correctText}"`;
-      updateHud();
-
-      // advance after a short pause so they can read the feedback
-      setTimeout(() => {
-        if (currentIndex + 1 < questions.length) {
-          currentIndex += 1;
-          // Show transition message after Q4 (index 3) before Q5 (index 4)
-          if (currentIndex === 4) {
-            showTransition();
-          } else {
-            renderQuestion();
-          }
-        } else {
-          showResult();
-        }
-      }, 1400);
-    }
-
-    // Show transition message between wedding questions and personal questions
-    function showTransition() {
-      questionTag.textContent = "Transición";
-      questionTitle.textContent = "Ahora, unas personales...";
-      questionBody.textContent = "";
-      optionsContainer.innerHTML = '';
-      questionHint.textContent = "";
-
-      // Auto-advance after 3 seconds
-      setTimeout(() => {
-        renderQuestion();
-      }, 3000);
-    }
-
-    // Show results with counts and present final role choice buttons
-    function showResult() {
-      const total = questions.length;
-      resultScoreText.textContent = `${score} / ${total}`;
-
-      let titleText, bodyText;
-      if (score >= total - 1) {
-        titleText = 'Fenomeno';
-        bodyText = `${guestName}, lo hiciste increible con ${score}/${total}.`;
-      } else if (score >= Math.floor(total / 2)) {
-        titleText = 'Pasaste… de vaina';
-        bodyText = `${guestName}, ${score}/${total}. Sólido, un poco sospechoso, pero aceptado.`;
-      } else {
-        titleText = 'Uhmm raspaste…';
-        bodyText = `${guestName}, solo ${score}/${total}. Aún así elegido estas salvado.`;
-      }
-
-      // summary includes wrong count + reveal
-      resultTitle.textContent = titleText;
-      const revealIntro = '<br><br>Quería confirmar que eras digno de nuestra amistad y confirmar si eras apto para lo que realmente necesito pedirte...';
-      const revealText = finalRole === 'Best Man'
-        ? `${revealIntro}<br><br>Bueno, el punto de todo esto: quiero que seas mi Best Man.<br><br>Tienes dos opciones:`
-        : `${revealIntro}<br><br>Bueno, el punto de todo esto: quiero que seas mi Groomsman.<br><br>Tienes dos opciones:`;
-      resultBody.innerHTML = bodyText + revealText;
-
-      // set up final choice buttons: both confirm the fixed role (derived from name)
-      btnYes1.querySelector('span.label')?.remove?.();
-      btnYes2.querySelector('span.label')?.remove?.();
-      // Button 1: accept with correct fixed role
-      btnYes1.innerHTML = finalRole === 'Best Man'
-        ? '<span class="icon">👑</span><span>Ser tu Best Man</span>'
-        : '<span class="icon">🤝</span><span>Ser tu Groomsman</span>';
-      // Button 2: funny resigned accept (same result)
-      btnYes2.innerHTML = '<span class="icon">🔥</span><span>Está bien, acepto. No tengo opción.</span>';
-
-      // Both buttons confirm the same fixed role
-      btnYes1.onclick = () => chooseFinalRole(finalRole);
-      btnYes2.onclick = () => chooseFinalRole(finalRole);
-
-      showCard(cardResult);
-    }
-
-    // Final selection handler
-    function chooseFinalRole(role) {
-      chosenRole = role;
-      // Final card must clearly state the fixed role and use a short warm message
-      if (role === 'Best Man') {
-        finalTitle.textContent = 'Eres mi Best Man';
-        finalBody.innerHTML = `${guestName}, oficialmente eres mi Best Man.<br><br>Toma screenshot y mándamelo para saber que completaste esto.`;
-      } else {
-        finalTitle.textContent = 'Eres mi Groomsman';
-        finalBody.innerHTML = `${guestName}, oficialmente eres mi Groomsman.<br><br>Toma screenshot y mándamelo para saber que completaste esto.`;
-      }
-      
-      // Add the final photo if person config exists
-      const existingImg = cardFinal.querySelector('.final-photo');
-      if (existingImg) existingImg.remove();
-      
-      if (person && person.finalImage) {
-        const img = document.createElement('img');
-        img.className = 'final-photo';
-        img.src = person.finalImage;
-        img.alt = `${guestName}'s photo`;
-        cardFinal.querySelector('.card-body')?.appendChild(img) || cardFinal.appendChild(img);
-      }
-
-      showCard(cardFinal);
-
-      // Launch confetti celebration!
-      setTimeout(() => launchConfetti(), 200);
-    }
-
-    // Attempt to close the tab/window when they click Done
-    function finalizeAndClose() {
-      // Prevent multiple activations
-      if (hasFinalized) return;
-      hasFinalized = true;
-
-      // Best effort: browsers usually only allow window.close() on windows opened via script.
-      try { window.close(); } catch (e) { /* ignore */ }
-
-      // Disable the button and give feedback
-      if (btnDone) {
-        btnDone.disabled = true;
-        const doneLabel = btnDone.querySelector('span:last-child');
-        if (doneLabel) doneLabel.textContent = 'Listo ✅';
-        // Hide the button entirely from the UI
-        btnDone.style.display = 'none';
-      }
-
-      // Fallback: show a small notice (we keep the final card visible) — add it only once
-      const note = ' Si la pestaña no se cierra, puedes cerrarla manualmente.';
-      if (!finalBody.textContent.includes('Si la pestaña no se cierra')) {
-        finalBody.textContent += note;
-      }
-    }
-
-    // Initialization and bindings
-    function initPersonalization() {
-      if (person) {
-        roleLabel.textContent = 'Boda 2026';
-        introTitle.textContent = `${person.nickname}, tengo que confirmar algo antes de la boda.`;
-        introBody.innerHTML = `Responde estas preguntas.<br>(Toma menos de 2 minutos)<br><br>Gracias!`;
-      } else {
-        roleLabel.textContent = 'Enlace Inválido';
-        introTitle.textContent = '¡Oops!';
-        introBody.innerHTML = '<strong>Este enlace no está configurado.</strong><br><br>Escríbeme para pedir el link correcto.';
-        btnStart.disabled = true;
-        btnStart.textContent = 'Enlace Inválido';
-      }
-    }
-
-    btnStart.addEventListener('click', () => {
-      if (person && questions.length > 0) {
-        currentIndex = 0; score = 0; wrongCount = 0; attemptsPerQuestion.fill(0);
-        renderQuestion(); showCard(cardQuestion);
-      }
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.type = 'button';
+      btn.innerHTML = `<span class="label">${opt}</span><span class="key">${idx + 1}</span>`;
+      btn.onclick = () => handleAnswer(btn, idx);
+      el.optionsContainer.appendChild(btn);
     });
 
-    btnDone.addEventListener('click', finalizeAndClose);
+    el.questionHint.textContent = state.currentIndex === questions.length - 1 ? 'Última pregunta.' : 'Tienes un intento por pregunta.';
+    updateHud();
+  };
 
-    // Handle canvas resize on orientation change (mobile)
-    window.addEventListener('resize', () => {
+  const showTransition = () => {
+    el.questionTag.textContent = 'Transición';
+    el.questionTitle.textContent = 'Ahora, unas personales...';
+    el.questionBody.textContent = '';
+    el.optionsContainer.innerHTML = '';
+    el.questionHint.textContent = '';
+    setTimeout(renderQuestion, CONFIG.transitionDelay);
+  };
+
+  const showResult = () => {
+    const total = questions.length;
+    const tier = getResultTier(state.score, total);
+    const roleConfig = ROLE_CONFIG[person.role];
+
+    el.resultScoreText.textContent = `${state.score} / ${total}`;
+    el.resultTitle.textContent = tier.title;
+
+    const revealIntro = 'Quería confirmar que eras digno de nuestra amistad y confirmar si eras apto para lo que realmente necesito pedirte...';
+    el.resultBody.innerHTML = `${tier.getMessage(person.fullName, state.score, total)}<br><br>${revealIntro}<br><br>Bueno, el punto de todo esto: quiero que seas mi ${person.role}.<br><br>Tienes dos opciones:`;
+
+    el.btnYes1.innerHTML = `<span class="icon">${roleConfig.icon}</span><span>${roleConfig.buttonText}</span>`;
+    el.btnYes2.innerHTML = '<span class="icon">🔥</span><span>Está bien, acepto. No tengo opción.</span>';
+    el.btnYes1.onclick = el.btnYes2.onclick = chooseFinalRole;
+
+    showCard(el.cardResult);
+  };
+
+  const chooseFinalRole = () => {
+    el.finalTitle.textContent = `Eres mi ${person.role}`;
+    el.finalBody.innerHTML = `${person.fullName}, oficialmente eres mi ${person.role}.<br><br>Toma screenshot y mándamelo para saber que completaste esto.`;
+
+    const existingImg = el.cardFinal.querySelector('.final-photo');
+    if (existingImg) existingImg.remove();
+
+    if (person.finalImage) {
+      const img = document.createElement('img');
+      img.className = 'final-photo';
+      img.src = person.finalImage;
+      img.alt = `${person.fullName}'s photo`;
+      el.finalBody.appendChild(img);
+    }
+
+    showCard(el.cardFinal);
+    setTimeout(launchConfetti, 200);
+  };
+
+  // ===================== EVENT HANDLERS =====================
+  const handleAnswer = (buttonEl, selectedIdx) => {
+    const q = questions[state.currentIndex];
+    if (buttonEl.disabled) return;
+
+    [...el.optionsContainer.children].forEach(b => b.disabled = true);
+
+    const isCorrect = selectedIdx === q.correctIndex;
+    buttonEl.classList.add(isCorrect ? 'correct' : 'wrong');
+
+    if (isCorrect) {
+      state.score++;
+    } else {
+      el.optionsContainer.children[q.correctIndex]?.classList.add('correct');
+    }
+
+    el.questionHint.textContent = `Respondiste: "${q.options[selectedIdx]}" — Correcto: "${q.options[q.correctIndex]}"`;
+    updateHud();
+
+    setTimeout(() => {
+      if (++state.currentIndex < questions.length) {
+        state.currentIndex === 4 ? showTransition() : renderQuestion();
+      } else {
+        showResult();
+      }
+    }, CONFIG.answerFeedbackDelay);
+  };
+
+  const finalizeAndClose = () => {
+    if (state.hasFinalized) return;
+    state.hasFinalized = true;
+
+    try { window.close(); } catch {}
+
+    el.btnDone.disabled = true;
+    el.btnDone.style.display = 'none';
+
+    if (!el.finalBody.textContent.includes('Si la pestaña no se cierra')) {
+      el.finalBody.innerHTML += ' Si la pestaña no se cierra, puedes cerrarla manualmente.';
+    }
+  };
+
+  // ===================== CONFETTI =====================
+  const launchConfetti = () => {
+    const canvas = document.getElementById('confettiCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confetti = Array.from({ length: CONFIG.confettiCount }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 4 + 2,
+      d: Math.random() * CONFIG.confettiCount,
+      color: CONFIG.colors[Math.floor(Math.random() * CONFIG.colors.length)],
+      tilt: Math.floor(Math.random() * 10) - 10,
+      tiltAngleIncrement: Math.random() * 0.07 + 0.05,
+      tiltAngle: 0
+    }));
+
+    let angle = 0;
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      confetti.forEach(c => {
+        ctx.beginPath();
+        ctx.lineWidth = c.r / 2;
+        ctx.strokeStyle = c.color;
+        ctx.moveTo(c.x + c.tilt + c.r / 4, c.y);
+        ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 4);
+        ctx.stroke();
+
+        c.tiltAngle += c.tiltAngleIncrement;
+        c.y += (Math.cos(angle + c.d) + 3 + c.r / 2) / 2;
+        c.x += Math.sin(angle);
+        c.tilt = Math.sin(c.tiltAngle) * 15;
+      });
+
+      angle += 0.01;
+
+      if (!confetti.every(c => c.y > canvas.height + 20)) {
+        requestAnimationFrame(draw);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    };
+
+    draw();
+  };
+
+  // ===================== INITIALIZATION =====================
+  const init = () => {
+    if (person) {
+      el.roleLabel.textContent = 'Boda 2026';
+      el.introTitle.textContent = `${person.nickname}, tengo que confirmar algo antes de la boda.`;
+      el.introBody.innerHTML = `Responde estas preguntas.<br>(Toma menos de 2 minutos)<br><br>Gracias!`;
+    } else {
+      el.roleLabel.textContent = 'Enlace Inválido';
+      el.introTitle.textContent = '¡Oops!';
+      el.introBody.innerHTML = '<strong>Este enlace no está configurado.</strong><br><br>Escríbeme para pedir el link correcto.';
+      el.btnStart.disabled = true;
+      el.btnStart.textContent = 'Enlace Inválido';
+    }
+
+    el.btnStart.onclick = () => {
+      if (person && questions.length) {
+        state.currentIndex = 0;
+        state.score = 0;
+        renderQuestion();
+        showCard(el.cardQuestion);
+      }
+    };
+
+    el.btnDone.onclick = finalizeAndClose;
+
+    window.onresize = () => {
       const canvas = document.getElementById('confettiCanvas');
       if (canvas) {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
       }
-    });
+    };
 
-    // kickoff
-    initPersonalization(); updateHud();
-  </script>
+    updateHud();
+  };
+
+  init();
+})();
+</script>
 </body>
 </html>

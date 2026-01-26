@@ -3,7 +3,8 @@
     "allow": [
       "Bash(start index.html)",
       "Bash(python -m http.server:*)",
-      "Bash(git push)"
+      "Bash(git push)",
+      "Bash(git remote:*)"
     ]
   }
 }
