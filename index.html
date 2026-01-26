@@ -261,7 +261,7 @@
       </div>
       <div>
         <div class="btn-row">
-          <button id="btnDone" class="btn btn-primary"><span class="icon">📲</span><span>Listo</span></button>
+          <button id="btnDone" class="btn btn-primary">Listo</button>
         </div>
         <div class="small-text">Puedes cerrar esta pestaña. LET'S GO!</div>
       </div>
@@ -280,7 +280,7 @@
     answerFeedbackDelay: 1400,
     confettiCount: 150,
     confettiDuration: 8000,
-    colors: ['#3f5e42', '#6f8b73', '#e2d7c9', '#f2ede5', '#c0564a', '#7b8577']
+    colors: ['#FFD700', '#FFC107', '#FFFFFF', '#F5F5F5', '#000000', '#333333', '#D4AF37', '#C9B037']
   };
 
   const QUESTIONS = {
@@ -580,7 +580,7 @@
     if (person) {
       el.roleLabel.textContent = 'Lisboa';
       el.introTitle.textContent = `${person.nickname}, tengo que confirmar algo antes de la boda.`;
-      el.introBody.innerHTML = `Responde estas preguntas.<br>(Toma menos de 2 minutos)<br><br>Gracias!`;
+      el.introBody.innerHTML = `Por favor, responde estas preguntas.<br>(Toma menos de 2 minutos)<br><br>Gracias!`;
     } else {
       el.roleLabel.textContent = 'Enlace Inválido';
       el.introTitle.textContent = '¡Oops!';
