@@ -197,7 +197,7 @@
     <header>
       <div class="title-block">
         <span class="subtitle">Cuestionario de boda</span>
-        <h1>Lisboa, Sep 20th, 2026</h1>
+        <h1>Lisboa: Sep 20, 2026</h1>
       </div>
       <div class="badge">
         <span class="icon">🇵🇹</span>
@@ -205,12 +205,12 @@
       </div>
     </header>
 
-    <div class="hud">
+    <div id="hud" class="hud">
       <div class="hud-pill"><span>Question</span><span class="value" id="hudQuestion">0 / 0</span></div>
       <div class="hud-pill good"><span>Score</span><span class="value" id="hudScore">0</span></div>
     </div>
 
-    <div class="hint">Responde honestamente. Sin ayuda.</div>
+    <div id="hint" class="hint">Responde honestamente. Sin ayuda.</div>
 
     <div id="cardIntro" class="card active">
       <div>
@@ -263,7 +263,7 @@
         <div class="btn-row">
           <button id="btnDone" class="btn btn-primary"><span class="icon">📲</span><span>Listo</span></button>
         </div>
-        <div class="small-text">Puedes cerrar esta pestaña, pero la responsabilidad ahora es permanente.</div>
+        <div class="small-text">Puedes cerrar esta pestaña. LET'S GO!</div>
       </div>
     </div>
 
@@ -295,12 +295,12 @@
       { title: "Si vamos a un bar, ¿qué NO me vas a ver tomando?", options: ["Cerveza", "Aperol Spritz", "Anis"], correctIndex: 0 }
     ],
     howWeMet: {
-      diego: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["En clase de algebra del panita Kline", "En un dayger", "En una lanchita en los Roques"], correctIndex: 0 },
-      marco: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["Haciendo la fila para buscar los libros antes de empezar Sophomore year de high school", "En una competencia de natacion en el club italo", "En un open party en Savanna"], correctIndex: 0 },
-      gabriel: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["En Dave & Buster's", "En el carrito de perro caliente al frente del Tolon", "En un burdel comiendo carne molia"], correctIndex: 0 },
-      guillermo: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["En high school en una clase de Slutsky", "En la heladeria coldstone", "En un dayger random"], correctIndex: 0 },
-      daniel: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["Un dia random en Cypress durante lunch", "En los tryouts de Weston FC academy", "En un burdel por la calle 8"], correctIndex: 0 },
-      andres: { title: "¿Cómo nos conocimos? (tu y yo... cero maricoteo)", options: ["En tu casa un dia random", "En una lanchita en los Roques", "En un burdel por la calle 8"], correctIndex: 0 }
+      diego: { title: "¿Cómo nos conocimos?<br>(tu y yo... cero maricoteo)", options: ["En clase de algebra del panita Kline", "En un dayger", "En una lanchita en los Roques"], correctIndex: 0 },
+      marco: { title: "¿Cómo nos conocimos?<br>(tu y yo... cero maricoteo)", options: ["Haciendo la fila para buscar los libros antes de empezar Sophomore year de high school", "En una competencia de natacion en el club italo", "En un open party en Savanna"], correctIndex: 0 },
+      gabriel: { title: "¿Cómo nos conocimos?<br>(tu y yo... cero maricoteo)", options: ["En Dave & Buster's", "En el carrito de perro caliente al frente del Tolon", "En un burdel comiendo carne molia"], correctIndex: 0 },
+      guillermo: { title: "¿Cómo nos conocimos?<br>(tu y yo... cero maricoteo)", options: ["En high school en una clase de Slutsky", "En la heladeria coldstone", "En un dayger random"], correctIndex: 0 },
+      daniel: { title: "¿Cómo nos conocimos?<br>(tu y yo... cero maricoteo)", options: ["Un dia random en Cypress durante lunch", "En los tryouts de Weston FC academy", "En un burdel por la calle 8"], correctIndex: 0 },
+      andres: { title: "¿Cómo nos conocimos?<br>(tu y yo... cero maricoteo)", options: ["En tu casa un dia random", "En una lanchita en los Roques", "En un burdel por la calle 8"], correctIndex: 0 }
     }
   };
 
@@ -315,8 +315,8 @@
 
   const RESULT_TIERS = [
     { minScore: (total) => total - 1, title: 'Fenomeno', getMessage: (name, score, total) => `${name}, lo hiciste increible con ${score}/${total}.` },
-    { minScore: (total) => Math.floor(total / 2), title: 'Pasaste… de vaina', getMessage: (name, score, total) => `${name}, ${score}/${total}. Sólido, un poco sospechoso, pero aceptado.` },
-    { minScore: () => 0, title: 'Uhmm raspaste…', getMessage: (name, score, total) => `${name}, solo ${score}/${total}. Aún así elegido estas salvado.` }
+    { minScore: (total) => Math.floor(total / 2), title: 'Pasaste… de vaina', getMessage: (name, score, total) => `${name}, ${score}/${total}.<br>Sólido, un poco sospechoso, pero aceptado.` },
+    { minScore: () => 0, title: 'Uhmm raspaste…', getMessage: (name, score, total) => `${name}, solo ${score}/${total}.<br>Aún así elegido estas salvado.` }
   ];
 
   const ROLE_CONFIG = {
@@ -355,6 +355,8 @@
     roleLabel: $('roleLabel'),
     introTitle: $('introTitle'),
     introBody: $('introBody'),
+    hud: $('hud'),
+    hint: $('hint'),
     hudQuestion: $('hudQuestion'),
     hudScore: $('hudScore'),
     questionTag: $('questionTag'),
@@ -400,7 +402,7 @@
   const renderQuestion = () => {
     const q = questions[state.currentIndex];
     el.questionTag.textContent = `Pregunta ${state.currentIndex + 1}`;
-    el.questionTitle.textContent = q.title;
+    el.questionTitle.innerHTML = q.title;
     el.questionBody.textContent = '';
     el.optionsContainer.innerHTML = '';
 
@@ -431,22 +433,28 @@
     const tier = getResultTier(state.score, total);
     const roleConfig = ROLE_CONFIG[person.role];
 
+    el.hud.style.display = 'none';
+    el.hint.style.display = 'none';
+
     el.resultScoreText.textContent = `${state.score} / ${total}`;
     el.resultTitle.textContent = tier.title;
 
-    const revealIntro = 'Quería confirmar que eras digno de nuestra amistad y confirmar si eras apto para lo que realmente necesito pedirte...';
-    el.resultBody.innerHTML = `${tier.getMessage(person.fullName, state.score, total)}<br><br>${revealIntro}<br><br>Bueno, el punto de todo esto: quiero que seas mi ${person.role}.<br><br>Tienes dos opciones:`;
+    const revealIntro = 'Quería confirmar que eras digno de nuestra amistad y apto para lo que realmente necesito pedirte...';
+    el.resultBody.innerHTML = `${tier.getMessage(person.fullName, state.score, total)}<br><br>${revealIntro}<br><br>Bueno, el punto de todo esto:<br><strong style="font-size: 1.15em;">Quiero que seas mi ${person.role}.</strong><br><br>Tienes dos opciones:`;
 
     el.btnYes1.innerHTML = `<span class="icon">${roleConfig.icon}</span><span>${roleConfig.buttonText}</span>`;
-    el.btnYes2.innerHTML = '<span class="icon">🔥</span><span>Está bien, acepto. No tengo opción.</span>';
+    el.btnYes2.innerHTML = '<span class="icon">🔥</span><span>Acepto... No tengo opción.</span>';
     el.btnYes1.onclick = el.btnYes2.onclick = chooseFinalRole;
 
     showCard(el.cardResult);
   };
 
   const chooseFinalRole = () => {
+    el.hud.style.display = 'none';
+    el.hint.style.display = 'none';
+
     el.finalTitle.textContent = `Eres mi ${person.role}`;
-    el.finalBody.innerHTML = `${person.fullName}, oficialmente eres mi ${person.role}.<br><br>Toma screenshot y mándamelo para saber que completaste esto.`;
+    el.finalBody.innerHTML = `${person.fullName}, oficialmente eres mi ${person.role}.<br><br>Toma screenshot y mándamelo!`;
 
     const existingImg = el.cardFinal.querySelector('.final-photo');
     if (existingImg) existingImg.remove();
